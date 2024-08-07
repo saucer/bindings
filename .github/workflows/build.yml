@@ -33,8 +33,15 @@ jobs:
       - name: 📥 Checkout
         uses: actions/checkout@v4
 
+      - name: 📥 Checkout Saucer
+        uses: actions/checkout@v4
+        with:
+          repository: "saucer/saucer"
+          sparse-checkout: ".github"
+          path: "actions"
+
       - name: 🛸 Setup Saucer
-        uses: saucer/saucer/.github/actions/setup
+        uses: ./actions/.github/actions/setup
         with:
           backend: ${{ matrix.backend }}
           platform: ${{ matrix.platform }}
