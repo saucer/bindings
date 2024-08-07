@@ -27,7 +27,7 @@ jobs:
             os: archlinux:base-devel
 
     runs-on: ${{ matrix.os }}
-    name: bindings-${{ matrix.backend }}-${{ matrix.backend }}
+    name: bindings-${{ matrix.backend }}-${{ matrix.config }}
 
     steps:
       - name: 📥 Checkout
