@@ -5,10 +5,12 @@ extern "C"
 {
 #endif
 
+#include "export.h"
+
 #include <stddef.h>
 
-    void saucer_memory_free(void *data);
-    void *saucer_memory_alloc(size_t size);
+    SAUCER_EXPORT void saucer_memory_free(void *data);
+    SAUCER_EXPORT void *saucer_memory_alloc(size_t size);
 
 #ifdef __cplusplus
 }
