@@ -20,13 +20,16 @@ jobs:
 
           - backend: Qt5
             platform: Linux
-            os: archlinux:base-devel
+            os: ubuntu-latest
+            container: archlinux:base-devel
 
           - backend: Qt6
             platform: Linux
-            os: archlinux:base-devel
+            os: ubuntu-latest
+            container: archlinux:base-devel
 
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
     name: bindings-${{ matrix.backend }}-${{ matrix.config }}
 
     steps:
