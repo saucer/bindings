@@ -1,0 +1,47 @@
+on:
+  push:
+  pull_request:
+
+name: 🏗️ Build Bindings
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+
+      matrix:
+        backend: [WebView2, Qt5, Qt6]
+        config: [Debug, Release, RelWithDebInfo]
+
+        include:
+          - backend: WebView2
+            platform: Windows
+            os: windows-latest
+
+          - backend: Qt5
+            platform: Linux
+            os: archlinux:base-devel
+
+          - backend: Qt6
+            platform: Linux
+            os: archlinux:base-devel
+
+    runs-on: ${{ matrix.os }}
+    name: bindings-${{ matrix.backend }}-${{ matrix.backend }}
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🛸 Setup Saucer
+        uses: saucer/saucer/.github/actions/setup
+        with:
+          backend: ${{ matrix.backend }}
+          platform: ${{ matrix.platform }}
+          build-type: ${{ matrix.config }}
+
+      - name: 📦 Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Binding (${{ matrix.backend }}-${{ matrix.config }})
+          path: release
