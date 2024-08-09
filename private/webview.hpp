@@ -5,7 +5,7 @@
 
 struct saucer_handle : saucer::webview
 {
-    saucer_on_message m_on_message;
+    saucer_on_message m_on_message{};
 
   public:
     using saucer::webview::webview;
