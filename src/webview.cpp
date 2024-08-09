@@ -150,14 +150,14 @@ extern "C"
         handle->clear_embedded(file);
     }
 
-    void saucer_webview_execute(saucer_handle *handle, const char *java_script)
+    void saucer_webview_execute(saucer_handle *handle, const char *code)
     {
-        handle->execute(java_script);
+        handle->execute(code);
     }
 
-    void saucer_webview_inject(saucer_handle *handle, const char *java_script, SAUCER_LOAD_TIME load_time)
+    void saucer_webview_inject(saucer_handle *handle, const char *code, SAUCER_LOAD_TIME time, SAUCER_WEB_FRAME frame)
     {
-        handle->inject(java_script, static_cast<saucer::load_time>(load_time));
+        handle->inject(code, static_cast<saucer::load_time>(time), static_cast<saucer::web_frame>(frame));
     }
 
     void saucer_webview_handle_scheme(saucer_handle *handle, const char *name, saucer_scheme_handler handler)

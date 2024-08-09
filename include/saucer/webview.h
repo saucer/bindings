@@ -20,6 +20,12 @@ extern "C"
         SAUCER_LOAD_TIME_READY,
     };
 
+    enum SAUCER_WEB_FRAME
+    {
+        SAUCER_WEB_FRAME_TOP,
+        SAUCER_WEB_FRAME_ALL,
+    };
+
     enum SAUCER_WEB_EVENT
     {
         SAUCER_WEB_EVENT_TITLE_CHANGED,
@@ -69,8 +75,9 @@ extern "C"
     SAUCER_EXPORT void saucer_webview_clear_embedded(saucer_handle *);
     SAUCER_EXPORT void saucer_webview_clear_embedded_file(saucer_handle *, const char *file);
 
-    SAUCER_EXPORT void saucer_webview_execute(saucer_handle *, const char *java_script);
-    SAUCER_EXPORT void saucer_webview_inject(saucer_handle *, const char *java_script, SAUCER_LOAD_TIME load_time);
+    SAUCER_EXPORT void saucer_webview_execute(saucer_handle *, const char *code);
+    SAUCER_EXPORT void saucer_webview_inject(saucer_handle *, const char *code, SAUCER_LOAD_TIME time,
+                                             SAUCER_WEB_FRAME frame);
 
     /**
      * @note The stash returned from within the @param handler is automatically free'd
