@@ -28,7 +28,7 @@ extern "C"
         handle->value().storage_path = path;
     }
 
-    void saucer_options_add_chrome_flag(saucer_options *handle, const char *flag)
+    void saucer_options_add_browser_flag(saucer_options *handle, const char *flag)
     {
         handle->value().browser_flags.emplace(flag);
     }

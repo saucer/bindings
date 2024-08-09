@@ -18,7 +18,7 @@ extern "C"
     SAUCER_EXPORT void saucer_options_set_hardware_acceleration(saucer_options *, bool enabled);
 
     SAUCER_EXPORT void saucer_options_set_storage_path(saucer_options *, const char *path);
-    SAUCER_EXPORT void saucer_options_add_chrome_flag(saucer_options *, const char *flag);
+    SAUCER_EXPORT void saucer_options_add_browser_flag(saucer_options *, const char *flag);
 
 #ifdef __cplusplus
 }
