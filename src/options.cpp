@@ -30,6 +30,6 @@ extern "C"
 
     void saucer_options_add_chrome_flag(saucer_options *handle, const char *flag)
     {
-        handle->value().chrome_flags.emplace(flag);
+        handle->value().browser_flags.emplace(flag);
     }
 }
