@@ -46,6 +46,7 @@ jobs:
         with:
           repository: "saucer/saucer"
           sparse-checkout: ".github"
+          ref: very-experimental
           path: "actions"
 
       - name: 🛸 Setup Saucer
