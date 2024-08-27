@@ -1,6 +1,8 @@
 #pragma once
 
 #include "webview.h"
+#include "utils/handle.hpp"
+
 #include <saucer/webview.hpp>
 
 struct saucer_handle : saucer::webview
@@ -25,4 +27,8 @@ struct saucer_handle : saucer::webview
 
         return m_on_message(message.c_str());
     }
+};
+
+struct saucer_natives : bindings::handle<saucer_natives, saucer::natives>
+{
 };

@@ -25,6 +25,7 @@ extern "C"
         SAUCER_WEB_EVENT_DOM_READY,
     };
 
+    struct saucer_natives;
     struct saucer_embedded_file;
 
     /*[[sc::requires_free]]*/ SAUCER_EXPORT saucer_embedded_file *saucer_embed(saucer_stash *content, const char *mime);
@@ -35,6 +36,9 @@ extern "C"
 
     typedef bool (*saucer_on_message)(const char *);
     SAUCER_EXPORT void saucer_webview_on_message(saucer_handle *, saucer_on_message callback);
+
+    /*[[sc::requires_free]]*/ SAUCER_EXPORT saucer_natives *saucer_webview_natives(saucer_handle *);
+    SAUCER_EXPORT void saucer_natives_free(saucer_natives *);
 
     /*[[sc::requires_free]]*/ SAUCER_EXPORT saucer_icon *saucer_webview_favicon(saucer_handle *);
     /*[[sc::requires_free]]*/ SAUCER_EXPORT char *saucer_webview_page_title(saucer_handle *);

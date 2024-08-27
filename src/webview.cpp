@@ -46,6 +46,16 @@ extern "C"
         handle->m_on_message = callback;
     }
 
+    saucer_natives *saucer_webview_natives(saucer_handle *handle)
+    {
+        return saucer_natives::from(handle->natives());
+    }
+
+    void saucer_natives_free(saucer_natives *handle)
+    {
+        delete handle;
+    }
+
     saucer_icon *saucer_webview_favicon(saucer_handle *handle)
     {
         return saucer_icon::from(handle->favicon());
