@@ -2,6 +2,7 @@
 
 #include "icon.hpp"
 #include "stash.hpp"
+#include "script.hpp"
 #include "scheme.hpp"
 #include "options.hpp"
 
@@ -120,6 +121,21 @@ extern "C"
         handle->set_url(url);
     }
 
+    void saucer_webview_back(saucer_handle *handle)
+    {
+        handle->back();
+    }
+
+    void saucer_webview_forward(saucer_handle *handle)
+    {
+        handle->forward();
+    }
+
+    void saucer_webview_reload(saucer_handle *handle)
+    {
+        handle->reload();
+    }
+
     void saucer_webview_embed_file(saucer_handle *handle, const char *name, saucer_embedded_file *file)
     {
         handle->embed({{name, file->value()}});
@@ -128,11 +144,6 @@ extern "C"
     void saucer_webview_serve(saucer_handle *handle, const char *file)
     {
         handle->serve(file);
-    }
-
-    void saucer_webview_serve_scheme(saucer_handle *handle, const char *file, const char *scheme)
-    {
-        handle->serve(file, scheme);
     }
 
     void saucer_webview_clear_scripts(saucer_handle *handle)
@@ -150,14 +161,14 @@ extern "C"
         handle->clear_embedded(file);
     }
 
+    void saucer_webview_inject(saucer_handle *handle, saucer_script *script)
+    {
+        handle->inject(script->value());
+    }
+
     void saucer_webview_execute(saucer_handle *handle, const char *code)
     {
         handle->execute(code);
-    }
-
-    void saucer_webview_inject(saucer_handle *handle, const char *code, SAUCER_LOAD_TIME time, SAUCER_WEB_FRAME frame)
-    {
-        handle->inject(code, static_cast<saucer::load_time>(time), static_cast<saucer::web_frame>(frame));
     }
 
     void saucer_webview_handle_scheme(saucer_handle *handle, const char *name, saucer_scheme_handler handler)

@@ -24,6 +24,11 @@ extern "C"
         delete handle;
     }
 
+    void saucer_response_set_status(saucer_response *handle, int status)
+    {
+        handle->value()->status = status;
+    }
+
     void saucer_response_add_header(saucer_response *handle, const char *header, const char *value)
     {
         handle->value()->headers.emplace(header, value);

@@ -165,6 +165,9 @@ extern "C"
 
         switch (event)
         {
+        case SAUCER_WINDOW_EVENT_DECORATED:
+            return handle->once<window_event::decorated>(
+                bindings::callback<events::type<window_event::decorated>>(handle, callback));
         case SAUCER_WINDOW_EVENT_CLOSE:
             return handle->once<window_event::close>(
                 bindings::callback<events::type<window_event::close>>(handle, callback));
@@ -195,6 +198,9 @@ extern "C"
 
         switch (event)
         {
+        case SAUCER_WINDOW_EVENT_DECORATED:
+            return handle->on<window_event::decorated>(
+                bindings::callback<events::type<window_event::decorated>>(handle, callback));
         case SAUCER_WINDOW_EVENT_CLOSE:
             return handle->on<window_event::close>(
                 bindings::callback<events::type<window_event::close>>(handle, callback));

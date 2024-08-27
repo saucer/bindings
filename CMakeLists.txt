@@ -53,6 +53,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/memory.cpp"
 
     "src/stash.cpp"
+    "src/script.cpp"
     "src/scheme.cpp"
     "src/options.cpp"
     

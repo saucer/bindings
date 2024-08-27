@@ -10,21 +10,10 @@ extern "C"
 #include "window.h"
 #include "scheme.h"
 
+#include "script.h"
 #include "options.h"
 
 #include <stdbool.h>
-
-    enum SAUCER_LOAD_TIME
-    {
-        SAUCER_LOAD_TIME_CREATION,
-        SAUCER_LOAD_TIME_READY,
-    };
-
-    enum SAUCER_WEB_FRAME
-    {
-        SAUCER_WEB_FRAME_TOP,
-        SAUCER_WEB_FRAME_ALL,
-    };
 
     enum SAUCER_WEB_EVENT
     {
@@ -66,18 +55,21 @@ extern "C"
     SAUCER_EXPORT void saucer_webview_set_file(saucer_handle *, const char *file);
     SAUCER_EXPORT void saucer_webview_set_url(saucer_handle *, const char *url);
 
+    SAUCER_EXPORT void saucer_webview_back(saucer_handle *);
+    SAUCER_EXPORT void saucer_webview_forward(saucer_handle *);
+
+    SAUCER_EXPORT void saucer_webview_reload(saucer_handle *);
+
     SAUCER_EXPORT void saucer_webview_embed_file(saucer_handle *, const char *name, saucer_embedded_file *file);
     SAUCER_EXPORT void saucer_webview_serve(saucer_handle *, const char *file);
-    SAUCER_EXPORT void saucer_webview_serve_scheme(saucer_handle *, const char *file, const char *scheme);
 
     SAUCER_EXPORT void saucer_webview_clear_scripts(saucer_handle *);
 
     SAUCER_EXPORT void saucer_webview_clear_embedded(saucer_handle *);
     SAUCER_EXPORT void saucer_webview_clear_embedded_file(saucer_handle *, const char *file);
 
+    SAUCER_EXPORT void saucer_webview_inject(saucer_handle *, saucer_script *script);
     SAUCER_EXPORT void saucer_webview_execute(saucer_handle *, const char *code);
-    SAUCER_EXPORT void saucer_webview_inject(saucer_handle *, const char *code, SAUCER_LOAD_TIME time,
-                                             SAUCER_WEB_FRAME frame);
 
     /**
      * @note The stash returned from within the @param handler is automatically free'd

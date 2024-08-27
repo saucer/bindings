@@ -12,11 +12,11 @@ extern "C"
 
     enum SAUCER_REQUEST_ERROR
     {
-        SAUCER_REQUEST_ERROR_FAILED,
-        SAUCER_REQUEST_ERROR_DENIED,
-        SAUCER_REQUEST_ERROR_ABORTED,
-        SAUCER_REQUEST_ERROR_BAD_URL,
         SAUCER_REQUEST_ERROR_NOT_FOUND,
+        SAUCER_REQUEST_ERROR_INVALID,
+        SAUCER_REQUEST_ERROR_ABORTED,
+        SAUCER_REQUEST_ERROR_DENIED,
+        SAUCER_REQUEST_ERROR_FAILED,
     };
 
     struct saucer_response;
@@ -31,6 +31,7 @@ extern "C"
      */
     SAUCER_EXPORT void saucer_response_free(saucer_response *);
 
+    SAUCER_EXPORT void saucer_response_set_status(saucer_response *, int status);
     SAUCER_EXPORT void saucer_response_add_header(saucer_response *, const char *header, const char *value);
 
     struct saucer_request;
