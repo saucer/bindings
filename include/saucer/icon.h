@@ -15,6 +15,8 @@ extern "C"
     SAUCER_EXPORT void saucer_icon_free(saucer_icon *);
     SAUCER_EXPORT bool saucer_icon_empty(saucer_icon *);
 
+    SAUCER_EXPORT void saucer_icon_save(saucer_icon *, const char *path);
+
     /**
      * @brief Try to construct an icon from a given file.
      * @note The pointer pointed to by @param result will be set to a saucer_icon in case of success. The returned icon

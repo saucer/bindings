@@ -69,7 +69,7 @@ include("cmake/cpm.cmake")
 
 CPMFindPackage(
   NAME           saucer
-  GIT_TAG        very-experimental
+  GIT_TAG        master
   GIT_REPOSITORY "https://github.com/saucer/saucer"
 )
 

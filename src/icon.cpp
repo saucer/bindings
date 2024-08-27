@@ -13,6 +13,11 @@ extern "C"
         return handle->value().empty();
     }
 
+    void saucer_icon_save(saucer_icon *handle, const char *path)
+    {
+        handle->value().save(path);
+    }
+
     void saucer_icon_from_file(saucer_icon **result, const char *file)
     {
         auto icon = saucer::icon::from(file);
