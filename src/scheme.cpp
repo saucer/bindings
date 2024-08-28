@@ -67,9 +67,10 @@ extern "C"
         *headers = static_cast<char **>(saucer_memory_alloc(*count * sizeof(char *)));
         *values  = static_cast<char **>(saucer_memory_alloc(*count * sizeof(char *)));
 
-        for (const auto &[index, element] : std::views::enumerate(data))
+        for (auto it = data.begin(); it != data.end(); it++)
         {
-            const auto &[header, value] = element;
+            const auto &[header, value] = *it;
+            const auto index            = std::distance(data.begin(), it);
 
             (*headers)[index] = static_cast<char *>(saucer_memory_alloc(header.capacity()));
             (*values)[index]  = static_cast<char *>(saucer_memory_alloc(value.capacity()));
