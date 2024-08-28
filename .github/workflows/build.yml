@@ -10,7 +10,7 @@ jobs:
       fail-fast: false
 
       matrix:
-        backend: [WebKitGtk, WebView2, Qt5, Qt6]
+        backend: [WebKit, WebKitGtk, WebView2, Qt5, Qt6]
         config: [Debug, Release, RelWithDebInfo]
 
         include:
@@ -33,6 +33,10 @@ jobs:
             os: ubuntu-latest
             container: archlinux:base-devel
 
+          - backend: WebKit
+            platform: MacOS
+            os: macos-latest
+
     runs-on: ${{ matrix.os }}
     container: ${{ matrix.container }}
     name: bindings-${{ matrix.backend }}-${{ matrix.config }}
@@ -46,8 +50,8 @@ jobs:
         with:
           repository: "saucer/saucer"
           sparse-checkout: ".github"
-          ref: very-experimental
           path: "actions"
+          ref: master
 
       - name: 🛸 Setup Saucer
         uses: ./actions/.github/actions/setup
