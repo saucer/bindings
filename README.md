@@ -13,3 +13,9 @@
 > [!WARNING]
 > The bindings found in this repository are not feature complete c-bindings (Interop has to be implemented by the user).  
 > Instead, they are the building grounds for language-bindings.
+
+## Existing Bindings
+
+> All bindings are developed and maintained by the community, their compatibility conformance may vary.
+
+* Java: [saucer4j](https://github.com/saucer/saucer4j)
