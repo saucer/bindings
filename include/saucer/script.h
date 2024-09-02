@@ -27,7 +27,9 @@ extern "C"
     SAUCER_EXPORT void saucer_script_free(saucer_script *);
 
     SAUCER_EXPORT void saucer_script_set_frame(saucer_script *, SAUCER_WEB_FRAME frame);
+    SAUCER_EXPORT void saucer_script_set_time(saucer_script *, SAUCER_LOAD_TIME time);
     SAUCER_EXPORT void saucer_script_set_permanent(saucer_script *, bool permanent);
+    SAUCER_EXPORT void saucer_script_set_code(saucer_script *, const char *code);
 
 #ifdef __cplusplus
 }
