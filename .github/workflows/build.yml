@@ -15,13 +15,19 @@ jobs:
       fail-fast: false
 
       matrix:
-        backend: [WebKit, WebKitGtk, WebView2, Qt5, Qt6]
-        config: [Debug, Release, RelWithDebInfo]
+        backend: [WebKit, WebKitGtk, WebView2, WebView2-Hack, Qt5, Qt6]
+        config: [Debug, Release, RelWithDebInfo, MinSizeRel]
 
         include:
           - backend: WebView2
             platform: Windows
             os: windows-latest
+
+          - backend: WebView2-Hack
+            backend-override: WebView2
+            platform: Windows
+            os: windows-latest
+            cmake-args: -Dsaucer_msvc_hack=ON
 
           - backend: Qt5
             platform: Linux
@@ -61,9 +67,10 @@ jobs:
       - name: 🛸 Setup Saucer
         uses: ./actions/.github/actions/setup
         with:
-          backend: ${{ matrix.backend }}
+          backend: ${{ matrix.backend-override || matrix.backend }}
           platform: ${{ matrix.platform }}
           build-type: ${{ matrix.config }}
+          cmake-args: ${{ matrix.cmake-args }}
 
       - name: 📦 Upload Artifact
         uses: actions/upload-artifact@v4
