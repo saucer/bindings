@@ -13,7 +13,9 @@ extern "C"
     struct saucer_icon;
 
     SAUCER_EXPORT void saucer_icon_free(saucer_icon *);
+
     SAUCER_EXPORT bool saucer_icon_empty(saucer_icon *);
+    SAUCER_EXPORT saucer_stash *saucer_icon_data(saucer_icon *);
 
     SAUCER_EXPORT void saucer_icon_save(saucer_icon *, const char *path);
 
