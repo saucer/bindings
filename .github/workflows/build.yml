@@ -1,6 +1,11 @@
 on:
   push:
   workflow_dispatch:
+    inputs:
+      ref:
+        type: string
+        default: master
+        description: The ref of saucer to use
 
 name: 🏗️ Build Bindings
 
@@ -51,7 +56,7 @@ jobs:
           repository: "saucer/saucer"
           sparse-checkout: ".github"
           path: "actions"
-          ref: master
+          ref: ${{ github.event.inputs.ref || 'master' }}
 
       - name: 🛸 Setup Saucer
         uses: ./actions/.github/actions/setup
