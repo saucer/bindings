@@ -223,19 +223,4 @@ extern "C"
 
         std::unreachable();
     }
-
-    void saucer_window_dispatch(saucer_handle *handle, saucer_window_callback callback)
-    {
-        handle->dispatch(callback).wait();
-    }
-
-    void saucer_window_run()
-    {
-        saucer::window::run();
-    }
-
-    void saucer_window_run_once()
-    {
-        saucer::window::run<false>();
-    }
 }

@@ -9,32 +9,33 @@
 
 extern "C"
 {
-    saucer_response *saucer_response_new(saucer_stash *data, const char *mime)
+    saucer_scheme_response *saucer_scheme_response_new(saucer_stash *data, const char *mime)
     {
-        return saucer_response::from({{saucer::response{data->value(), mime, {}}}});
+        return saucer_scheme_response::from({{saucer::scheme::response{data->value(), mime, {}}}});
     }
 
-    saucer_response *saucer_response_unexpected(SAUCER_REQUEST_ERROR error)
+    saucer_scheme_response *saucer_scheme_response_unexpected(SAUCER_SCHEME_ERROR error)
     {
-        return saucer_response::from(tl::unexpected<saucer::request_error>{static_cast<saucer::request_error>(error)});
+        return saucer_scheme_response::from(
+            tl::unexpected<saucer::scheme::error>{static_cast<saucer::scheme::error>(error)});
     }
 
-    void saucer_response_free(saucer_response *handle)
+    void saucer_scheme_response_free(saucer_scheme_response *handle)
     {
         delete handle;
     }
 
-    void saucer_response_set_status(saucer_response *handle, int status)
+    void saucer_scheme_response_set_status(saucer_scheme_response *handle, int status)
     {
         handle->value()->status = status;
     }
 
-    void saucer_response_add_header(saucer_response *handle, const char *header, const char *value)
+    void saucer_scheme_response_add_header(saucer_scheme_response *handle, const char *header, const char *value)
     {
         handle->value()->headers.emplace(header, value);
     }
 
-    char *saucer_request_url(saucer_request *handle)
+    char *saucer_scheme_request_url(saucer_scheme_request *handle)
     {
         auto url = handle->value()->url();
 
@@ -44,7 +45,7 @@ extern "C"
         return rtn;
     }
 
-    char *saucer_request_method(saucer_request *handle)
+    char *saucer_scheme_request_method(saucer_scheme_request *handle)
     {
         auto method = handle->value()->method();
 
@@ -54,12 +55,12 @@ extern "C"
         return rtn;
     }
 
-    saucer_stash *saucer_request_content(saucer_request *handle)
+    saucer_stash *saucer_scheme_request_content(saucer_scheme_request *handle)
     {
         return saucer_stash::from(handle->value()->content());
     }
 
-    void saucer_request_headers(saucer_request *handle, char ***headers, char ***values, size_t *count)
+    void saucer_scheme_request_headers(saucer_scheme_request *handle, char ***headers, char ***values, size_t *count)
     {
         auto data = handle->value()->headers();
         *count    = data.size();

@@ -82,12 +82,6 @@ extern "C"
     SAUCER_EXPORT void saucer_window_once(saucer_handle *, SAUCER_WINDOW_EVENT event, void *callback);
     SAUCER_EXPORT uint64_t saucer_window_on(saucer_handle *, SAUCER_WINDOW_EVENT event, void *callback);
 
-    typedef void (*saucer_window_callback)();
-    SAUCER_EXPORT void saucer_window_dispatch(saucer_handle *, saucer_window_callback callback);
-
-    SAUCER_EXPORT void saucer_window_run();
-    SAUCER_EXPORT void saucer_window_run_once();
-
 #ifdef __cplusplus
 }
 #endif

@@ -4,7 +4,7 @@
 #include "stash.hpp"
 #include "script.hpp"
 #include "scheme.hpp"
-#include "options.hpp"
+#include "preferences.hpp"
 
 #include "memory.h"
 #include "webview.h"
@@ -31,9 +31,9 @@ extern "C"
         delete handle;
     }
 
-    saucer_handle *saucer_new(saucer_options *options)
+    saucer_handle *saucer_new(saucer_preferences *prefs)
     {
-        return new saucer_handle{options ? options->value() : saucer::options{}};
+        return new saucer_handle{prefs->value()};
     }
 
     void saucer_free(saucer_handle *handle)
@@ -44,16 +44,6 @@ extern "C"
     void saucer_webview_on_message(saucer_handle *handle, saucer_on_message callback)
     {
         handle->m_on_message = callback;
-    }
-
-    saucer_natives *saucer_webview_natives(saucer_handle *handle)
-    {
-        return saucer_natives::from(handle->natives());
-    }
-
-    void saucer_natives_free(saucer_natives *handle)
-    {
-        delete handle;
     }
 
     saucer_icon *saucer_webview_favicon(saucer_handle *handle)
@@ -184,9 +174,9 @@ extern "C"
     void saucer_webview_handle_scheme(saucer_handle *handle, const char *name, saucer_scheme_handler handler)
     {
         handle->handle_scheme(name,
-                              [handle, handler](const saucer::request &request)
+                              [handle, handler](const saucer::scheme::request &request)
                               {
-                                  auto *wrapped = saucer_request::from(&request);
+                                  auto *wrapped = saucer_scheme_request::from(&request);
                                   auto *ptr     = std::invoke(handler, handle, wrapped);
                                   auto rtn      = ptr->value();
 
@@ -218,24 +208,24 @@ extern "C"
 
         switch (event)
         {
-        case SAUCER_WEB_EVENT_URL_CHANGED:
-            return handle->once<web_event::url_changed>(
-                bindings::callback<events::type<web_event::url_changed>>(handle, callback));
-        case SAUCER_WEB_EVENT_ICON_CHANGED:
-            return handle->once<web_event::icon_changed>(
-                bindings::callback<events::type<web_event::icon_changed>>(handle, callback));
-        case SAUCER_WEB_EVENT_TITLE_CHANGED:
-            return handle->once<web_event::title_changed>(
-                bindings::callback<events::type<web_event::title_changed>>(handle, callback));
         case SAUCER_WEB_EVENT_DOM_READY:
             return handle->once<web_event::dom_ready>(
                 bindings::callback<events::type<web_event::dom_ready>>(handle, callback));
-        case SAUCER_WEB_EVENT_LOAD_STARTED:
-            return handle->once<web_event::load_started>(
-                bindings::callback<events::type<web_event::load_started>>(handle, callback));
-        case SAUCER_WEB_EVENT_LOAD_FINISHED:
-            return handle->once<web_event::load_finished>(
-                bindings::callback<events::type<web_event::load_finished>>(handle, callback));
+        case SAUCER_WEB_EVENT_NAVIGATED:
+            return handle->once<web_event::navigated>(
+                bindings::callback<events::type<web_event::navigated>>(handle, callback));
+        case SAUCER_WEB_EVENT_NAVIGATE:
+            return handle->once<web_event::navigate>(
+                bindings::callback<events::type<web_event::navigate>>(handle, callback));
+        case SAUCER_WEB_EVENT_FAVICON:
+            return handle->once<web_event::favicon>(
+                bindings::callback<events::type<web_event::favicon>>(handle, callback));
+        case SAUCER_WEB_EVENT_TITLE:
+            return handle->once<web_event::title>( //
+                bindings::callback<events::type<web_event::title>>(handle, callback));
+        case SAUCER_WEB_EVENT_LOAD:
+            return handle->once<web_event::load>( //
+                bindings::callback<events::type<web_event::load>>(handle, callback));
         }
 
         std::unreachable();
@@ -248,24 +238,24 @@ extern "C"
 
         switch (event)
         {
-        case SAUCER_WEB_EVENT_URL_CHANGED:
-            return handle->on<web_event::url_changed>(
-                bindings::callback<events::type<web_event::url_changed>>(handle, callback));
-        case SAUCER_WEB_EVENT_ICON_CHANGED:
-            return handle->on<web_event::icon_changed>(
-                bindings::callback<events::type<web_event::icon_changed>>(handle, callback));
-        case SAUCER_WEB_EVENT_TITLE_CHANGED:
-            return handle->on<web_event::title_changed>(
-                bindings::callback<events::type<web_event::title_changed>>(handle, callback));
         case SAUCER_WEB_EVENT_DOM_READY:
             return handle->on<web_event::dom_ready>(
                 bindings::callback<events::type<web_event::dom_ready>>(handle, callback));
-        case SAUCER_WEB_EVENT_LOAD_STARTED:
-            return handle->on<web_event::load_started>(
-                bindings::callback<events::type<web_event::load_started>>(handle, callback));
-        case SAUCER_WEB_EVENT_LOAD_FINISHED:
-            return handle->on<web_event::load_finished>(
-                bindings::callback<events::type<web_event::load_finished>>(handle, callback));
+        case SAUCER_WEB_EVENT_NAVIGATED:
+            return handle->on<web_event::navigated>(
+                bindings::callback<events::type<web_event::navigated>>(handle, callback));
+        case SAUCER_WEB_EVENT_NAVIGATE:
+            return handle->on<web_event::navigate>(
+                bindings::callback<events::type<web_event::navigate>>(handle, callback));
+        case SAUCER_WEB_EVENT_FAVICON:
+            return handle->on<web_event::favicon>(
+                bindings::callback<events::type<web_event::favicon>>(handle, callback));
+        case SAUCER_WEB_EVENT_TITLE:
+            return handle->on<web_event::title>( //
+                bindings::callback<events::type<web_event::title>>(handle, callback));
+        case SAUCER_WEB_EVENT_LOAD:
+            return handle->on<web_event::load>( //
+                bindings::callback<events::type<web_event::load>>(handle, callback));
         }
 
         std::unreachable();

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(saucer-bindings LANGUAGES CXX VERSION 3.0.0)
+project(saucer-bindings LANGUAGES CXX VERSION 4.0.0)
 
 # --------------------------------------------------------------------------------------------------------
 # CMake options
@@ -9,7 +9,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN 1)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
 # --------------------------------------------------------------------------------------------------------
 # Create executable
@@ -23,6 +23,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 23 CXX_EXTENSIONS 
 
 if (PROJECT_IS_TOP_LEVEL AND NOT MSVC AND NOT CMAKE_CXX_SIMULATE_ID MATCHES "MSVC")
     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Werror -pedantic -pedantic-errors -Wfatal-errors)
+endif()
+
+if (NOT MSVC)
+  target_compile_options(${PROJECT_NAME} PRIVATE -Wno-unknown-warning-option -Wno-missing-field-initializers -Wno-cast-function-type)
 endif()
 
 # --------------------------------------------------------------------------------------------------------
@@ -49,13 +53,17 @@ target_include_directories(${PROJECT_NAME} PRIVATE "include/saucer" "private" "u
 # --------------------------------------------------------------------------------------------------------
 
 target_sources(${PROJECT_NAME} PRIVATE 
+    "src/app.cpp"
+
     "src/icon.cpp"
     "src/memory.cpp"
 
     "src/stash.cpp"
     "src/script.cpp"
     "src/scheme.cpp"
-    "src/options.cpp"
+
+    "src/navigation.cpp"
+    "src/preferences.cpp"
     
     "src/window.cpp"
     "src/webview.cpp"
@@ -69,7 +77,7 @@ include("cmake/cpm.cmake")
 
 CPMFindPackage(
   NAME           saucer
-  GIT_TAG        v3.0.0
+  VERSION        4.0.0
   GIT_REPOSITORY "https://github.com/saucer/saucer"
 )
 

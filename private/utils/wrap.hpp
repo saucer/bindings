@@ -2,6 +2,7 @@
 
 #include "icon.hpp"
 #include "webview.hpp"
+#include "navigation.hpp"
 
 namespace bindings
 {
@@ -39,6 +40,19 @@ namespace bindings
         {
             // ! User is responsible for freeing this!
             return saucer_icon::make(std::forward<U>(data));
+        };
+    };
+
+    template <>
+    struct wrap<const saucer::navigation &>
+    {
+        using type = saucer_navigation *;
+
+        template <typename U>
+        static auto convert(U &&data)
+        {
+            // ! User is responsible for freeing this!
+            return saucer_navigation::make(std::forward<U>(data));
         };
     };
 

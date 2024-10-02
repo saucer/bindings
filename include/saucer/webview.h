@@ -11,34 +11,36 @@ extern "C"
 #include "scheme.h"
 
 #include "script.h"
-#include "options.h"
+#include "preferences.h"
 
 #include <stdbool.h>
 
     enum SAUCER_WEB_EVENT
     {
-        SAUCER_WEB_EVENT_TITLE_CHANGED,
-        SAUCER_WEB_EVENT_LOAD_FINISHED,
-        SAUCER_WEB_EVENT_ICON_CHANGED,
-        SAUCER_WEB_EVENT_LOAD_STARTED,
-        SAUCER_WEB_EVENT_URL_CHANGED,
         SAUCER_WEB_EVENT_DOM_READY,
+        SAUCER_WEB_EVENT_NAVIGATED,
+        SAUCER_WEB_EVENT_NAVIGATE,
+        SAUCER_WEB_EVENT_FAVICON,
+        SAUCER_WEB_EVENT_TITLE,
+        SAUCER_WEB_EVENT_LOAD,
     };
 
-    struct saucer_natives;
+    enum SAUCER_STATE
+    {
+        SAUCER_STATE_STARTED,
+        SAUCER_STATE_FINISHED,
+    };
+
     struct saucer_embedded_file;
 
     /*[[sc::requires_free]]*/ SAUCER_EXPORT saucer_embedded_file *saucer_embed(saucer_stash *content, const char *mime);
     SAUCER_EXPORT void saucer_embed_free(saucer_embedded_file *);
 
-    /*[[sc::requires_free]]*/ SAUCER_EXPORT saucer_handle *saucer_new(saucer_options *options);
+    /*[[sc::requires_free]]*/ SAUCER_EXPORT saucer_handle *saucer_new(saucer_preferences *prefs);
     SAUCER_EXPORT void saucer_free(saucer_handle *);
 
     typedef bool (*saucer_on_message)(const char *);
     SAUCER_EXPORT void saucer_webview_on_message(saucer_handle *, saucer_on_message callback);
-
-    /*[[sc::requires_free]]*/ SAUCER_EXPORT saucer_natives *saucer_webview_natives(saucer_handle *);
-    SAUCER_EXPORT void saucer_natives_free(saucer_natives *);
 
     /*[[sc::requires_free]]*/ SAUCER_EXPORT saucer_icon *saucer_webview_favicon(saucer_handle *);
     /*[[sc::requires_free]]*/ SAUCER_EXPORT char *saucer_webview_page_title(saucer_handle *);
