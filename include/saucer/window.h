@@ -31,6 +31,12 @@ extern "C"
         SAUCER_WINDOW_EDGE_RIGHT,
     };
 
+    enum SAUCER_POLICY
+    {
+        SAUCER_POLICY_ALLOW,
+        SAUCER_POLICY_BLOCK,
+    };
+
     struct saucer_handle;
 
     SAUCER_EXPORT bool saucer_window_focused(saucer_handle *);
