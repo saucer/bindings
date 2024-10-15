@@ -1,4 +1,6 @@
+#include "icon.h"
 #include "icon.hpp"
+
 #include "stash.hpp"
 
 extern "C"

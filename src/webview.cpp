@@ -7,7 +7,6 @@
 #include "preferences.hpp"
 
 #include "memory.h"
-#include "webview.h"
 
 #include "utils/wrap.hpp"
 #include "utils/handle.hpp"
