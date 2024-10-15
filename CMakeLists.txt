@@ -54,6 +54,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE "include/saucer" "private" "u
 
 target_sources(${PROJECT_NAME} PRIVATE 
     "src/app.cpp"
+    "src/desktop.cpp"
 
     "src/icon.cpp"
     "src/memory.cpp"
