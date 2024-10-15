@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(saucer-bindings LANGUAGES CXX VERSION 4.0.0)
+project(saucer-bindings LANGUAGES CXX VERSION 4.0.1)
 
 # --------------------------------------------------------------------------------------------------------
 # CMake options
@@ -78,7 +78,7 @@ include("cmake/cpm.cmake")
 
 CPMFindPackage(
   NAME           saucer
-  VERSION        4.0.0
+  VERSION        4.0.1
   GIT_REPOSITORY "https://github.com/saucer/saucer"
 )
 
