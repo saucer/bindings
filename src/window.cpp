@@ -13,6 +13,11 @@
 
 extern "C"
 {
+    bool saucer_window_visible(saucer_handle *handle)
+    {
+        return handle->visible();
+    }
+
     bool saucer_window_focused(saucer_handle *handle)
     {
         return handle->focused();

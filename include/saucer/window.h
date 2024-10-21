@@ -39,7 +39,9 @@ extern "C"
 
     struct saucer_handle;
 
+    SAUCER_EXPORT bool saucer_window_visible(saucer_handle *);
     SAUCER_EXPORT bool saucer_window_focused(saucer_handle *);
+
     SAUCER_EXPORT bool saucer_window_minimized(saucer_handle *);
     SAUCER_EXPORT bool saucer_window_maximized(saucer_handle *);
 

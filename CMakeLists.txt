@@ -78,7 +78,7 @@ include("cmake/cpm.cmake")
 
 CPMFindPackage(
   NAME           saucer
-  VERSION        4.0.1
+  VERSION        4.1.0
   GIT_REPOSITORY "https://github.com/saucer/saucer"
 )
 
