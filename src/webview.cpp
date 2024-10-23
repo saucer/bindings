@@ -6,13 +6,11 @@
 #include "scheme.hpp"
 #include "preferences.hpp"
 
-#include "memory.h"
-
 #include "utils/wrap.hpp"
+#include "utils/string.hpp"
 #include "utils/handle.hpp"
 
 #include <utility>
-#include <cstring>
 
 struct saucer_embedded_file : bindings::handle<saucer_embedded_file, saucer::embedded_file>
 {
@@ -52,12 +50,7 @@ extern "C"
 
     char *saucer_webview_page_title(saucer_handle *handle)
     {
-        auto title = handle->page_title();
-
-        auto *rtn = static_cast<char *>(saucer_memory_alloc(title.capacity()));
-        strncpy(rtn, title.data(), title.capacity());
-
-        return rtn;
+        return bindings::alloc(handle->page_title());
     }
 
     bool saucer_webview_dev_tools(saucer_handle *handle)
@@ -67,12 +60,7 @@ extern "C"
 
     char *saucer_webview_url(saucer_handle *handle)
     {
-        auto url = handle->url();
-
-        auto *rtn = static_cast<char *>(saucer_memory_alloc(url.capacity()));
-        strncpy(rtn, url.data(), url.capacity());
-
-        return rtn;
+        return bindings::alloc(handle->url());
     }
 
     bool saucer_webview_context_menu(saucer_handle *handle)

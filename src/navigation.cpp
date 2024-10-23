@@ -1,9 +1,7 @@
 #include "navigation.h"
 #include "navigation.hpp"
 
-#include "memory.h"
-
-#include <cstring>
+#include "utils/string.hpp"
 
 extern "C"
 {
@@ -14,12 +12,7 @@ extern "C"
 
     char *saucer_navigation_url(saucer_navigation *handle)
     {
-        auto url = handle->value().url();
-
-        auto *rtn = static_cast<char *>(saucer_memory_alloc(url.capacity()));
-        strncpy(rtn, url.data(), url.capacity());
-
-        return rtn;
+        return bindings::alloc(handle->value().url());
     }
 
     bool saucer_navigation_new_window(saucer_navigation *handle)

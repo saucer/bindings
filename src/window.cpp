@@ -3,11 +3,10 @@
 #include "icon.hpp"
 #include "webview.hpp"
 
-#include "memory.h"
 #include "utils/wrap.hpp"
+#include "utils/string.hpp"
 
 #include <utility>
-#include <cstring>
 
 #include <saucer/window.hpp>
 
@@ -50,12 +49,7 @@ extern "C"
 
     char *saucer_window_title(saucer_handle *handle)
     {
-        auto title = handle->title();
-
-        auto *rtn = static_cast<char *>(saucer_memory_alloc(title.capacity()));
-        strncpy(rtn, title.data(), title.capacity());
-
-        return rtn;
+        return bindings::alloc(handle->title());
     }
 
     void saucer_window_size(saucer_handle *handle, int *width, int *height)

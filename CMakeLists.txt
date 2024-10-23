@@ -56,9 +56,10 @@ target_sources(${PROJECT_NAME} PRIVATE
     "src/app.cpp"
     "src/desktop.cpp"
 
-    "src/icon.cpp"
+    "src/string.cpp"
     "src/memory.cpp"
-
+    
+    "src/icon.cpp"
     "src/stash.cpp"
     "src/script.cpp"
     "src/scheme.cpp"

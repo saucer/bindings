@@ -1,11 +1,10 @@
 #include "scheme.h"
 #include "scheme.hpp"
 
-#include "memory.h"
 #include "stash.hpp"
 
-#include <ranges>
-#include <cstring>
+#include "memory.h"
+#include "utils/string.hpp"
 
 extern "C"
 {
@@ -37,22 +36,12 @@ extern "C"
 
     char *saucer_scheme_request_url(saucer_scheme_request *handle)
     {
-        auto url = handle->value()->url();
-
-        auto *rtn = static_cast<char *>(saucer_memory_alloc(url.capacity()));
-        strncpy(rtn, url.data(), url.capacity());
-
-        return rtn;
+        return bindings::alloc(handle->value()->url());
     }
 
     char *saucer_scheme_request_method(saucer_scheme_request *handle)
     {
-        auto method = handle->value()->method();
-
-        auto *rtn = static_cast<char *>(saucer_memory_alloc(method.capacity()));
-        strncpy(rtn, method.data(), method.capacity());
-
-        return rtn;
+        return bindings::alloc(handle->value()->method());
     }
 
     saucer_stash *saucer_scheme_request_content(saucer_scheme_request *handle)
@@ -73,11 +62,8 @@ extern "C"
             const auto &[header, value] = *it;
             const auto index            = std::distance(data.begin(), it);
 
-            (*headers)[index] = static_cast<char *>(saucer_memory_alloc(header.capacity()));
-            (*values)[index]  = static_cast<char *>(saucer_memory_alloc(value.capacity()));
-
-            strncpy((*headers)[index], header.data(), header.capacity());
-            strncpy((*values)[index], value.data(), value.capacity());
+            (*headers)[index] = bindings::alloc(header);
+            (*values)[index]  = bindings::alloc(value);
         }
     }
 }

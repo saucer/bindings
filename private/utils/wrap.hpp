@@ -12,7 +12,7 @@ namespace bindings
         using type = T;
 
         template <typename U>
-        static auto convert(U &&data)
+        static auto convert(U &data)
         {
             return data;
         };
@@ -24,7 +24,7 @@ namespace bindings
         using type = const char *;
 
         template <typename U>
-        static auto convert(U &&data)
+        static auto convert(U &data)
         {
             return data.c_str();
         };
@@ -36,10 +36,10 @@ namespace bindings
         using type = saucer_icon *;
 
         template <typename U>
-        static auto convert(U &&data)
+        static auto convert(U &data)
         {
             // ! User is responsible for freeing this!
-            return saucer_icon::make(std::forward<U>(data));
+            return saucer_icon::make(std::move(data));
         };
     };
 
@@ -49,10 +49,10 @@ namespace bindings
         using type = saucer_navigation *;
 
         template <typename U>
-        static auto convert(U &&data)
+        static auto convert(U &data)
         {
             // ! User is responsible for freeing this!
-            return saucer_navigation::make(std::forward<U>(data));
+            return saucer_navigation::make(std::move(data));
         };
     };
 
@@ -73,7 +73,7 @@ namespace bindings
         return [handle, callback]<typename... Ts>(Ts &&...args)
         {
             auto *converted = wrap<T>::convert(callback);
-            return std::invoke(converted, handle, wrap<Ts>::convert(std::forward<Ts>(args))...);
+            return std::invoke(converted, handle, wrap<Ts>::convert(args)...);
         };
     };
 } // namespace bindings
