@@ -8,7 +8,7 @@ char *bindings::alloc(const std::string &value)
     char *const rtn = static_cast<char *>(saucer_memory_alloc(size + 1));
 
     value.copy(rtn, size);
-    rtn[size + 1] = '\0';
+    rtn[size] = '\0';
 
     return rtn;
 }
