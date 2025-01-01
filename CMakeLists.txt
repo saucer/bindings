@@ -13,10 +13,6 @@ option(saucer_desktop "Enable support for the desktop module" ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-set(CMAKE_C_VISIBILITY_PRESET hidden)
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
-
 # --------------------------------------------------------------------------------------------------------
 # Setup library
 # --------------------------------------------------------------------------------------------------------
@@ -39,8 +35,10 @@ endif()
 # Export header
 # --------------------------------------------------------------------------------------------------------
 
+include("cmake/hide.cmake")
 include("cmake/export.cmake")
 
+saucer_bindings_hide_symbols(${PROJECT_NAME})
 saucer_bindings_export(${PROJECT_NAME} "SAUCER_EXPORT")
 
 # --------------------------------------------------------------------------------------------------------
@@ -82,10 +80,7 @@ CPMFindPackage(
   NAME           saucer
   VERSION        5.0.0
   GIT_REPOSITORY "https://github.com/saucer/saucer"
-  OPTIONS        "saucer_static OFF" 
-                 "CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON" 
-                 "CMAKE_VISIBILITY_INLINES_HIDDEN OFF" 
-                 "CMAKE_CXX_VISIBILITY_PRESET default"
+  OPTIONS        "saucer_static OFF" "CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON"
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC saucer::saucer)
