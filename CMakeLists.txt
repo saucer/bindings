@@ -12,7 +12,10 @@ option(saucer_desktop "Enable support for the desktop module" ON)
 # --------------------------------------------------------------------------------------------------------
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+
+set(CMAKE_C_VISIBILITY_PRESET hidden)
+set(CMAKE_CXX_VISIBILITY_PRESET hidden)
+set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
 # --------------------------------------------------------------------------------------------------------
 # Setup library
@@ -84,7 +87,10 @@ CPMFindPackage(
   NAME           saucer
   VERSION        5.0.0
   GIT_REPOSITORY "https://github.com/saucer/saucer"
-  OPTIONS        "saucer_static OFF"
+  OPTIONS        "saucer_static OFF" 
+                 "CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON" 
+                 "CMAKE_VISIBILITY_INLINES_HIDDEN OFF" 
+                 "CMAKE_CXX_VISIBILITY_PRESET default"
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC saucer::saucer)
