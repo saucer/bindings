@@ -93,7 +93,7 @@ extern "C"
 
         for (auto i = 0u; result->size() > i; i++)
         {
-            rtn[i] = bindings::alloc(result->at(i));
+            rtn[i] = bindings::alloc(result->at(i).string());
         }
 
         return rtn;
@@ -113,7 +113,7 @@ extern "C"
 
         for (auto i = 0u; result->size() > i; i++)
         {
-            rtn[i] = bindings::alloc(result->at(i));
+            rtn[i] = bindings::alloc(result->at(i).string());
         }
 
         return rtn;
