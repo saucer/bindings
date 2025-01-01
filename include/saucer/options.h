@@ -7,6 +7,8 @@ extern "C"
 
 #include "export.h"
 
+#include <stddef.h>
+
     struct saucer_options;
 
     SAUCER_EXPORT saucer_options *saucer_options_new(const char *id);
