@@ -22,12 +22,13 @@ jobs:
           - backend: WebView2
             platform: Windows
             os: windows-latest
+            cmake-args: -Dsaucer_serializer=Rflpp
 
           - backend: WebView2-Hack
             backend-override: WebView2
             platform: Windows
             os: windows-latest
-            cmake-args: -Dsaucer_msvc_hack=ON
+            cmake-args: -Dsaucer_msvc_hack=ON -Dsaucer_serializer=Rflpp
 
           - backend: Qt5
             platform: Linux
