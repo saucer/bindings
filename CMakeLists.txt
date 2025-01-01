@@ -12,6 +12,7 @@ option(saucer_desktop "Enable support for the desktop module" ON)
 # --------------------------------------------------------------------------------------------------------
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 # --------------------------------------------------------------------------------------------------------
 # Setup library
