@@ -86,7 +86,7 @@ CPMFindPackage(
   OPTIONS        "saucer_static OFF"
 )
 
-target_link_libraries(${PROJECT_NAME} PRIVATE saucer::saucer)
+target_link_libraries(${PROJECT_NAME} PUBLIC saucer::saucer)
 
 # --------------------------------------------------------------------------------------------------------
 # Setup Modules
