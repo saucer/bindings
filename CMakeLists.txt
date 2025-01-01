@@ -13,10 +13,6 @@ option(saucer_desktop "Enable support for the desktop module" ON)
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-set(CMAKE_C_VISIBILITY_PRESET hidden)
-set(CMAKE_CXX_VISIBILITY_PRESET hidden)
-set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
-
 # --------------------------------------------------------------------------------------------------------
 # Setup library
 # --------------------------------------------------------------------------------------------------------
