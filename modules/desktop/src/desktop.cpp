@@ -16,10 +16,10 @@ struct saucer_picker_options : bindings::handle<saucer_picker_options, saucer::m
 {
 };
 
+using saucer::modules::picker::type;
+
 extern "C"
 {
-    using saucer::modules::picker::type;
-
     saucer_desktop *saucer_desktop_new(saucer_application *app)
     {
         return saucer_desktop::make(app->value().get());
