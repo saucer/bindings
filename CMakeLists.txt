@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(saucer-bindings LANGUAGES CXX VERSION 4.0.1)
+project(saucer-bindings LANGUAGES CXX VERSION 5.0.0)
 
 # --------------------------------------------------------------------------------------------------------
 # CMake options
@@ -12,7 +12,7 @@ set(CMAKE_CXX_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 
 # --------------------------------------------------------------------------------------------------------
-# Create executable
+# Setup library
 # --------------------------------------------------------------------------------------------------------
 
 add_library(${PROJECT_NAME} SHARED)
@@ -46,7 +46,7 @@ generate_export_header(
 # --------------------------------------------------------------------------------------------------------
 
 target_include_directories(${PROJECT_NAME} PUBLIC  "include")
-target_include_directories(${PROJECT_NAME} PRIVATE "include/saucer" "private" "utils")
+target_include_directories(${PROJECT_NAME} PRIVATE "include/saucer" "private")
 
 # --------------------------------------------------------------------------------------------------------
 # Add Sources
@@ -54,7 +54,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE "include/saucer" "private" "u
 
 target_sources(${PROJECT_NAME} PRIVATE 
     "src/app.cpp"
-    "src/desktop.cpp"
+    "src/options.cpp"
 
     "src/string.cpp"
     "src/memory.cpp"
@@ -79,8 +79,9 @@ include("cmake/cpm.cmake")
 
 CPMFindPackage(
   NAME           saucer
-  VERSION        4.2.0
+  VERSION        5.0.0
   GIT_REPOSITORY "https://github.com/saucer/saucer"
+  OPTIONS        "saucer_static OFF"
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE saucer::saucer)

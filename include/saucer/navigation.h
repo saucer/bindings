@@ -13,7 +13,7 @@ extern "C"
 
     SAUCER_EXPORT void saucer_navigation_free(saucer_navigation *);
 
-    SAUCER_EXPORT char *saucer_navigation_url(saucer_navigation *);
+    /*[[sc::requires_free]]*/ SAUCER_EXPORT char *saucer_navigation_url(saucer_navigation *);
 
     SAUCER_EXPORT bool saucer_navigation_new_window(saucer_navigation *);
     SAUCER_EXPORT bool saucer_navigation_redirection(saucer_navigation *);

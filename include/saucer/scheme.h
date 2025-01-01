@@ -22,13 +22,6 @@ extern "C"
     struct saucer_scheme_response;
 
     SAUCER_EXPORT saucer_scheme_response *saucer_scheme_response_new(saucer_stash *data, const char *mime);
-    SAUCER_EXPORT saucer_scheme_response *saucer_scheme_response_unexpected(SAUCER_SCHEME_ERROR error);
-
-    /**
-     * @note Under normal circumstances this function should not be used. Once a saucer_response is
-     * returned from within a saucer_scheme_handler it is automatically deleted.
-     * You may use this function to free the response in case of an exception.
-     */
     SAUCER_EXPORT void saucer_scheme_response_free(saucer_scheme_response *);
 
     SAUCER_EXPORT void saucer_scheme_response_set_status(saucer_scheme_response *, int status);
@@ -36,6 +29,8 @@ extern "C"
                                                          const char *value);
 
     struct saucer_scheme_request;
+
+    void saucer_scheme_request_free(saucer_scheme_request *);
 
     /*[[sc::requires_free]]*/ SAUCER_EXPORT char *saucer_scheme_request_url(saucer_scheme_request *);
     /*[[sc::requires_free]]*/ SAUCER_EXPORT char *saucer_scheme_request_method(saucer_scheme_request *);
@@ -53,7 +48,14 @@ extern "C"
     SAUCER_EXPORT void saucer_scheme_request_headers(saucer_scheme_request *, char ***headers, char ***values,
                                                      size_t *count);
 
-    typedef saucer_scheme_response *(*saucer_scheme_handler)(saucer_handle *, saucer_scheme_request *);
+    struct saucer_scheme_executor;
+
+    SAUCER_EXPORT void saucer_scheme_executor_free(saucer_scheme_executor *);
+
+    SAUCER_EXPORT void saucer_scheme_executor_resolve(saucer_scheme_executor *, saucer_scheme_response *response);
+    SAUCER_EXPORT void saucer_scheme_executor_reject(saucer_scheme_executor *, SAUCER_SCHEME_ERROR error);
+
+    typedef void (*saucer_scheme_handler)(saucer_handle *, saucer_scheme_request *, saucer_scheme_executor *);
 
 #ifdef __cplusplus
 }

@@ -31,6 +31,12 @@ extern "C"
         SAUCER_STATE_FINISHED,
     };
 
+    enum SAUCER_LAUNCH
+    {
+        SAUCER_LAUNCH_SYNC,
+        SAUCER_LAUNCH_ASYNC,
+    };
+
     struct saucer_embedded_file;
 
     /*[[sc::requires_free]]*/ SAUCER_EXPORT saucer_embedded_file *saucer_embed(saucer_stash *content, const char *mime);
@@ -66,7 +72,8 @@ extern "C"
 
     SAUCER_EXPORT void saucer_webview_reload(saucer_handle *);
 
-    SAUCER_EXPORT void saucer_webview_embed_file(saucer_handle *, const char *name, saucer_embedded_file *file);
+    SAUCER_EXPORT void saucer_webview_embed_file(saucer_handle *, const char *name, saucer_embedded_file *file,
+                                                 SAUCER_LAUNCH policy);
     SAUCER_EXPORT void saucer_webview_serve(saucer_handle *, const char *file);
 
     SAUCER_EXPORT void saucer_webview_clear_scripts(saucer_handle *);
@@ -77,10 +84,8 @@ extern "C"
     SAUCER_EXPORT void saucer_webview_inject(saucer_handle *, saucer_script *script);
     SAUCER_EXPORT void saucer_webview_execute(saucer_handle *, const char *code);
 
-    /**
-     * @note The stash returned from within the @param handler is automatically free'd
-     */
-    SAUCER_EXPORT void saucer_webview_handle_scheme(saucer_handle *, const char *name, saucer_scheme_handler handler);
+    SAUCER_EXPORT void saucer_webview_handle_scheme(saucer_handle *, const char *name, saucer_scheme_handler handler,
+                                                    SAUCER_LAUNCH policy);
     SAUCER_EXPORT void saucer_webview_remove_scheme(saucer_handle *, const char *name);
 
     SAUCER_EXPORT void saucer_webview_clear(saucer_handle *, SAUCER_WEB_EVENT event);

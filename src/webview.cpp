@@ -123,9 +123,10 @@ extern "C"
         handle->reload();
     }
 
-    void saucer_webview_embed_file(saucer_handle *handle, const char *name, saucer_embedded_file *file)
+    void saucer_webview_embed_file(saucer_handle *handle, const char *name, saucer_embedded_file *file,
+                                   SAUCER_LAUNCH policy)
     {
-        handle->embed({{name, file->value()}});
+        handle->embed({{name, file->value()}}, static_cast<saucer::launch>(policy));
     }
 
     void saucer_webview_serve(saucer_handle *handle, const char *file)
@@ -158,19 +159,18 @@ extern "C"
         handle->execute(code);
     }
 
-    void saucer_webview_handle_scheme(saucer_handle *handle, const char *name, saucer_scheme_handler handler)
+    void saucer_webview_handle_scheme(saucer_handle *handle, const char *name, saucer_scheme_handler handler,
+                                      SAUCER_LAUNCH policy)
     {
-        handle->handle_scheme(name,
-                              [handle, handler](const saucer::scheme::request &request)
-                              {
-                                  auto *wrapped = saucer_scheme_request::from(&request);
-                                  auto *ptr     = std::invoke(handler, handle, wrapped);
-                                  auto rtn      = ptr->value();
-
-                                  delete ptr;
-
-                                  return rtn;
-                              });
+        handle->handle_scheme(
+            name,
+            [handle, handler](saucer::scheme::request req, saucer::scheme::executor exec)
+            {
+                auto *request  = saucer_scheme_request::from(std::move(req));
+                auto *executor = saucer_scheme_executor::from(std::move(exec));
+                std::invoke(handler, handle, request, executor);
+            },
+            static_cast<saucer::launch>(policy));
     }
 
     void saucer_webview_remove_scheme(saucer_handle *handle, const char *name)
