@@ -1,5 +1,5 @@
 build
-include/saucer/export.h
+**/export.h
 
 .vs
 .cache

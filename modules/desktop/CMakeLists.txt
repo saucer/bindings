@@ -15,7 +15,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 23 CXX_EXTENSIONS 
 # --------------------------------------------------------------------------------------------------------
 
 target_include_directories(${PROJECT_NAME} PUBLIC  "include")
-target_include_directories(${PROJECT_NAME} PRIVATE "include/saucer" "../../private")
+target_include_directories(${PROJECT_NAME} PRIVATE "include/saucer")
 
 # --------------------------------------------------------------------------------------------------------
 # Add Sources
@@ -36,4 +36,4 @@ CPMFindPackage(
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE saucer::desktop)
-target_link_libraries(${PROJECT_NAME} PUBLIC  saucer::bindings)
+saucer_bindings_add_module(${PROJECT_NAME} "SAUCER_DESKTOP_EXPORT")

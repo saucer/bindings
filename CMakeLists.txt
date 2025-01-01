@@ -39,13 +39,9 @@ endif()
 # Export header
 # --------------------------------------------------------------------------------------------------------
 
-include(GenerateExportHeader)
+include("cmake/export.cmake")
 
-generate_export_header(
-    ${PROJECT_NAME} 
-    EXPORT_MACRO_NAME "SAUCER_EXPORT"
-    EXPORT_FILE_NAME "${CMAKE_CURRENT_SOURCE_DIR}/include/saucer/export.h"
-)
+saucer_bindings_export(${PROJECT_NAME} "SAUCER_EXPORT")
 
 # --------------------------------------------------------------------------------------------------------
 # Include directories
@@ -61,8 +57,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE "include/saucer" "private")
 target_sources(${PROJECT_NAME} PRIVATE 
     "src/app.cpp"
     "src/options.cpp"
-
-    "src/string.cpp"
+    
     "src/memory.cpp"
     
     "src/icon.cpp"
@@ -98,6 +93,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC saucer::saucer)
 # --------------------------------------------------------------------------------------------------------
 # Setup Modules
 # --------------------------------------------------------------------------------------------------------
+
+include("cmake/module.cmake")
 
 if (saucer_desktop)
   add_subdirectory("modules/desktop")
