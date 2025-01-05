@@ -5,7 +5,7 @@
 
 extern "C"
 {
-    saucer_application *saucer_application_acquire(saucer_options *options)
+    saucer_application *saucer_application_init(saucer_options *options)
     {
         return saucer_application::from(saucer::application::init(options->value()));
     }
