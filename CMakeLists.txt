@@ -6,6 +6,7 @@ project(saucer-bindings LANGUAGES CXX VERSION 5.0.0)
 # --------------------------------------------------------------------------------------------------------
 
 option(saucer_desktop "Enable support for the desktop module" ON)
+option(saucer_pdf     "Enable support for the pdf module"     ON)
 
 # --------------------------------------------------------------------------------------------------------
 # CMake options
@@ -93,4 +94,8 @@ include("cmake/module.cmake")
 
 if (saucer_desktop)
   add_subdirectory("modules/desktop")
+endif()
+
+if (saucer_pdf)
+  add_subdirectory("modules/pdf")
 endif()
