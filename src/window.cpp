@@ -47,6 +47,11 @@ extern "C"
         return handle->always_on_top();
     }
 
+    bool saucer_window_click_through(saucer_handle *handle)
+    {
+        return handle->click_through();
+    }
+
     char *saucer_window_title(saucer_handle *handle)
     {
         return bindings::alloc(handle->title());
@@ -120,6 +125,11 @@ extern "C"
     void saucer_window_set_always_on_top(saucer_handle *handle, bool enabled)
     {
         handle->set_always_on_top(enabled);
+    }
+
+    void saucer_window_set_click_through(saucer_handle *handle, bool enabled)
+    {
+        handle->set_click_through(enabled);
     }
 
     void saucer_window_set_icon(saucer_handle *handle, saucer_icon *icon)

@@ -47,7 +47,9 @@ extern "C"
 
     SAUCER_EXPORT bool saucer_window_resizable(saucer_handle *);
     SAUCER_EXPORT bool saucer_window_decorations(saucer_handle *);
+
     SAUCER_EXPORT bool saucer_window_always_on_top(saucer_handle *);
+    SAUCER_EXPORT bool saucer_window_click_through(saucer_handle *);
 
     /*[[sc::requires_free]]*/ SAUCER_EXPORT char *saucer_window_title(saucer_handle *);
 
@@ -69,7 +71,9 @@ extern "C"
 
     SAUCER_EXPORT void saucer_window_set_resizable(saucer_handle *, bool enabled);
     SAUCER_EXPORT void saucer_window_set_decorations(saucer_handle *, bool enabled);
+
     SAUCER_EXPORT void saucer_window_set_always_on_top(saucer_handle *, bool enabled);
+    SAUCER_EXPORT void saucer_window_set_click_through(saucer_handle *, bool enabled);
 
     SAUCER_EXPORT void saucer_window_set_icon(saucer_handle *, saucer_icon *icon);
     SAUCER_EXPORT void saucer_window_set_title(saucer_handle *, const char *title);

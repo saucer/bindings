@@ -9,6 +9,11 @@ extern "C"
 
 #include "options.h"
 
+    /**
+     * @brief A handle to a saucer::application
+     * @note The application will live as long as there are handles to it. So make sure to properly free all handles you
+     * obtain to a saucer::application like through e.g. `saucer_application_active`!
+     */
     struct saucer_application;
 
     SAUCER_EXPORT saucer_application *saucer_application_init(saucer_options *options);

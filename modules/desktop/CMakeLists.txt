@@ -31,7 +31,7 @@ target_sources(${PROJECT_NAME} PRIVATE
 
 CPMFindPackage(
     NAME           saucer-desktop
-    VERSION        1.0.0
+    VERSION        2.0.0
     GIT_REPOSITORY "https://github.com/saucer/desktop"
 )
 
