@@ -30,7 +30,7 @@ extern "C"
 
     struct saucer_scheme_request;
 
-    void saucer_scheme_request_free(saucer_scheme_request *);
+    SAUCER_EXPORT void saucer_scheme_request_free(saucer_scheme_request *);
 
     /*[[sc::requires_free]]*/ SAUCER_EXPORT char *saucer_scheme_request_url(saucer_scheme_request *);
     /*[[sc::requires_free]]*/ SAUCER_EXPORT char *saucer_scheme_request_method(saucer_scheme_request *);
