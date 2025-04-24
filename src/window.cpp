@@ -109,7 +109,7 @@ extern "C"
 
     void saucer_window_set_maximized(saucer_handle *handle, bool enabled)
     {
-        handle->set_minimized(enabled);
+        handle->set_maximized(enabled);
     }
 
     void saucer_window_set_resizable(saucer_handle *handle, bool enabled)
