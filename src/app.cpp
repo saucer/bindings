@@ -1,57 +1,118 @@
-#include "app.h"
-#include "app.hpp"
+#include "app.impl.hpp"
 
-#include "options.hpp"
+template <>
+struct saucer::cutils::converter<saucer::screen>
+{
+    static auto *convert(saucer::screen screen)
+    {
+        return saucer_screen::from(std::move(screen));
+    }
+};
 
 extern "C"
 {
-    saucer_application *saucer_application_init(saucer_options *options)
+    void saucer_screen_free(saucer_screen *screen)
     {
-        return saucer_application::from(saucer::application::init(options->value()));
+        delete screen;
     }
 
-    void saucer_application_free(saucer_application *handle)
+    const char *saucer_screen_name(saucer_screen *screen)
     {
-        delete handle;
+        return (*screen)->name.c_str();
     }
 
-    saucer_application *saucer_application_active()
+    void saucer_screen_size(saucer_screen *screen, int *w, int *h)
     {
-        return saucer_application::from(saucer::application::active());
+        *w = (*screen)->size.w;
+        *h = (*screen)->size.h;
     }
 
-    bool saucer_application_thread_safe(saucer_application *handle)
+    void saucer_screen_position(saucer_screen *screen, int *x, int *y)
     {
-        return handle->value()->thread_safe();
+        *x = (*screen)->position.x;
+        *y = (*screen)->position.y;
     }
 
-    void saucer_application_pool_submit(saucer_application *handle, saucer_pool_callback callback)
+    saucer_application_options *saucer_application_options_new(const char *id)
     {
-        handle->value()->pool().submit(callback).get();
+        return saucer_application_options::from({.id = id});
     }
 
-    void saucer_application_pool_emplace(saucer_application *handle, saucer_pool_callback callback)
+    void saucer_application_options_free(saucer_application_options *options)
     {
-        handle->value()->pool().emplace(callback);
+        delete options;
     }
 
-    void saucer_application_post(saucer_application *handle, saucer_post_callback callback)
+    void saucer_application_options_set_argc(saucer_application_options *options, int argc)
     {
-        handle->value()->post(callback);
+        (*options)->argc = argc;
     }
 
-    void saucer_application_quit(saucer_application *handle)
+    void saucer_application_options_set_argv(saucer_application_options *options, char **argv)
     {
-        handle->value()->quit();
+        (*options)->argv = argv;
     }
 
-    void saucer_application_run(saucer_application *handle)
+    void saucer_application_options_set_quit_on_last_window_closed(saucer_application_options *options, bool value)
     {
-        handle->value()->run();
+        (*options)->quit_on_last_window_closed = value;
     }
 
-    void saucer_application_run_once(saucer_application *handle)
+    saucer_application *saucer_application_new(saucer_application_options *options, int *error)
     {
-        handle->value()->run<false>();
+        auto rtn = saucer::application::create(**options);
+
+        if (!rtn.has_value() && error)
+        {
+            *error = rtn.error().code();
+        }
+
+        if (!rtn.has_value())
+        {
+            return nullptr;
+        }
+
+        return saucer_application::from(std::move(rtn.value()));
+    }
+
+    void saucer_application_free(saucer_application *app)
+    {
+        delete app;
+    }
+
+    bool saucer_application_thread_safe(saucer_application *app)
+    {
+        return (*app)->thread_safe();
+    }
+
+    void saucer_application_screens(saucer_application *app, saucer_screen **screens, size_t *size)
+    {
+        saucer::cutils::return_range((*app)->screens(), screens, size);
+    }
+
+    int saucer_application_run(saucer_application *app, saucer_run_callback run, saucer_finish_callback finish,
+                               void *userdata)
+    {
+        auto capture = std::make_tuple(app, run, finish, userdata);
+
+        auto fn = [capture](saucer::application *app) -> coco::stray
+        {
+            auto [application, run, finish, userdata] = capture;
+            run(application, userdata);
+            co_await app->finish();
+            finish(application, userdata);
+        };
+
+        return (*app)->run(fn);
+    }
+
+    void saucer_application_post(saucer_application *app, saucer_post_callback callback)
+    {
+        (*app)->post(callback);
+    }
+
+    void saucer_application_quit(saucer_application *app)
+    {
+        (*app)->quit();
     }
 }

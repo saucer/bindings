@@ -1,235 +1,288 @@
-#include "window.h"
+#include "window.impl.hpp"
 
-#include "icon.hpp"
-#include "webview.hpp"
+#include "app.impl.hpp"
+#include "icon.impl.hpp"
 
-#include "utils/wrap.hpp"
-#include "utils/string.hpp"
+template <>
+struct saucer::cutils::converter<saucer::window::decoration>
+{
+    static auto convert(saucer::window::decoration decoration)
+    {
+        return static_cast<saucer_window_decoration>(decoration);
+    }
+};
 
-#include <utility>
-
-#include <saucer/window.hpp>
+template <>
+struct saucer::cutils::converter<saucer::policy>
+{
+    static auto convert(const saucer_policy &value)
+    {
+        return static_cast<saucer::policy>(value);
+    }
+};
 
 extern "C"
 {
-    bool saucer_window_visible(saucer_handle *handle)
+    saucer_window *saucer_window_new(saucer_application *app, int *error)
     {
-        return handle->visible();
-    }
+        auto rtn = saucer::window::create(app->ptr());
 
-    bool saucer_window_focused(saucer_handle *handle)
-    {
-        return handle->focused();
-    }
-
-    bool saucer_window_minimized(saucer_handle *handle)
-    {
-        return handle->minimized();
-    }
-
-    bool saucer_window_maximized(saucer_handle *handle)
-    {
-        return handle->maximized();
-    }
-
-    bool saucer_window_resizable(saucer_handle *handle)
-    {
-        return handle->resizable();
-    }
-
-    bool saucer_window_decorations(saucer_handle *handle)
-    {
-        return handle->decorations();
-    }
-
-    bool saucer_window_always_on_top(saucer_handle *handle)
-    {
-        return handle->always_on_top();
-    }
-
-    bool saucer_window_click_through(saucer_handle *handle)
-    {
-        return handle->click_through();
-    }
-
-    char *saucer_window_title(saucer_handle *handle)
-    {
-        return bindings::alloc(handle->title());
-    }
-
-    void saucer_window_size(saucer_handle *handle, int *width, int *height)
-    {
-        std::tie(*width, *height) = handle->size();
-    }
-
-    void saucer_window_max_size(saucer_handle *handle, int *width, int *height)
-    {
-        std::tie(*width, *height) = handle->max_size();
-    }
-
-    void saucer_window_min_size(saucer_handle *handle, int *width, int *height)
-    {
-        std::tie(*width, *height) = handle->min_size();
-    }
-
-    void saucer_window_hide(saucer_handle *handle)
-    {
-        handle->hide();
-    }
-
-    void saucer_window_show(saucer_handle *handle)
-    {
-        handle->show();
-    }
-
-    void saucer_window_close(saucer_handle *handle)
-    {
-        handle->close();
-    }
-
-    void saucer_window_focus(saucer_handle *handle)
-    {
-        handle->focus();
-    }
-
-    void saucer_window_start_drag(saucer_handle *handle)
-    {
-        handle->start_drag();
-    }
-
-    void saucer_window_start_resize(saucer_handle *handle, SAUCER_WINDOW_EDGE edge)
-    {
-        handle->start_resize(static_cast<saucer::window_edge>(edge));
-    }
-
-    void saucer_window_set_minimized(saucer_handle *handle, bool enabled)
-    {
-        handle->set_minimized(enabled);
-    }
-
-    void saucer_window_set_maximized(saucer_handle *handle, bool enabled)
-    {
-        handle->set_maximized(enabled);
-    }
-
-    void saucer_window_set_resizable(saucer_handle *handle, bool enabled)
-    {
-        handle->set_resizable(enabled);
-    }
-
-    void saucer_window_set_decorations(saucer_handle *handle, bool enabled)
-    {
-        handle->set_decorations(enabled);
-    }
-
-    void saucer_window_set_always_on_top(saucer_handle *handle, bool enabled)
-    {
-        handle->set_always_on_top(enabled);
-    }
-
-    void saucer_window_set_click_through(saucer_handle *handle, bool enabled)
-    {
-        handle->set_click_through(enabled);
-    }
-
-    void saucer_window_set_icon(saucer_handle *handle, saucer_icon *icon)
-    {
-        handle->set_icon(icon->value());
-    }
-
-    void saucer_window_set_title(saucer_handle *handle, const char *title)
-    {
-        handle->set_title(title);
-    }
-
-    void saucer_window_set_size(saucer_handle *handle, int width, int height)
-    {
-        handle->set_size(width, height);
-    }
-
-    void saucer_window_set_max_size(saucer_handle *handle, int width, int height)
-    {
-        handle->set_max_size(width, height);
-    }
-
-    void saucer_window_set_min_size(saucer_handle *handle, int width, int height)
-    {
-        handle->set_min_size(width, height);
-    }
-
-    void saucer_window_clear(saucer_handle *handle, SAUCER_WINDOW_EVENT event)
-    {
-        handle->clear(static_cast<saucer::window_event>(event));
-    }
-
-    void saucer_window_remove(saucer_handle *handle, SAUCER_WINDOW_EVENT event, uint64_t id)
-    {
-        handle->remove(static_cast<saucer::window_event>(event), id);
-    }
-
-    void saucer_window_once(saucer_handle *handle, SAUCER_WINDOW_EVENT event, void *callback)
-    {
-        using saucer::window_event;
-        using events = saucer::window::events;
-
-        switch (event)
+        if (!rtn.has_value() && error)
         {
-        case SAUCER_WINDOW_EVENT_DECORATED:
-            return handle->once<window_event::decorated>(
-                bindings::callback<events::type<window_event::decorated>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_CLOSE:
-            return handle->once<window_event::close>(
-                bindings::callback<events::type<window_event::close>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_CLOSED:
-            return handle->once<window_event::closed>(
-                bindings::callback<events::type<window_event::closed>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_FOCUS:
-            return handle->once<window_event::focus>(
-                bindings::callback<events::type<window_event::focus>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_MINIMIZE:
-            return handle->once<window_event::minimize>(
-                bindings::callback<events::type<window_event::minimize>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_MAXIMIZE:
-            return handle->once<window_event::maximize>(
-                bindings::callback<events::type<window_event::maximize>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_RESIZE:
-            return handle->once<window_event::resize>(
-                bindings::callback<events::type<window_event::resize>>(handle, callback));
+            *error = rtn.error().code();
         }
 
-        std::unreachable();
-    }
-
-    uint64_t saucer_window_on(saucer_handle *handle, SAUCER_WINDOW_EVENT event, void *callback)
-    {
-        using saucer::window_event;
-        using events = saucer::window::events;
-
-        switch (event)
+        if (!rtn.has_value())
         {
-        case SAUCER_WINDOW_EVENT_DECORATED:
-            return handle->on<window_event::decorated>(
-                bindings::callback<events::type<window_event::decorated>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_CLOSE:
-            return handle->on<window_event::close>(
-                bindings::callback<events::type<window_event::close>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_CLOSED:
-            return handle->on<window_event::closed>(
-                bindings::callback<events::type<window_event::closed>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_FOCUS:
-            return handle->on<window_event::focus>(
-                bindings::callback<events::type<window_event::focus>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_MINIMIZE:
-            return handle->on<window_event::minimize>(
-                bindings::callback<events::type<window_event::minimize>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_MAXIMIZE:
-            return handle->on<window_event::maximize>(
-                bindings::callback<events::type<window_event::maximize>>(handle, callback));
-        case SAUCER_WINDOW_EVENT_RESIZE:
-            return handle->on<window_event::resize>(
-                bindings::callback<events::type<window_event::resize>>(handle, callback));
+            return nullptr;
         }
 
-        std::unreachable();
+        return saucer_window::from(std::move(*rtn));
+    }
+
+    void saucer_window_free(saucer_window *window)
+    {
+        delete window;
+    }
+
+    bool saucer_window_visible(saucer_window *window)
+    {
+        return (**window)->visible();
+    }
+
+    bool saucer_window_focused(saucer_window *window)
+    {
+        return (**window)->focused();
+    }
+
+    bool saucer_window_minimized(saucer_window *window)
+    {
+        return (**window)->minimized();
+    }
+
+    bool saucer_window_maximized(saucer_window *window)
+    {
+        return (**window)->maximized();
+    }
+
+    bool saucer_window_resizable(saucer_window *window)
+    {
+        return (**window)->resizable();
+    }
+
+    bool saucer_window_fullscreen(saucer_window *window)
+    {
+        return (**window)->fullscreen();
+    }
+
+    bool saucer_window_always_on_top(saucer_window *window)
+    {
+        return (**window)->always_on_top();
+    }
+
+    bool saucer_window_click_through(saucer_window *window)
+    {
+        return (**window)->click_through();
+    }
+
+    void saucer_window_title(saucer_window *window, char *title, size_t *size)
+    {
+        saucer::cutils::return_range((**window)->title(), title, size);
+    }
+
+    void saucer_window_background(saucer_window *window, uint8_t *r, uint8_t *g, uint8_t *b, uint8_t *a)
+    {
+        auto background = (**window)->background();
+        *r              = background.r;
+        *g              = background.g;
+        *b              = background.b;
+        *a              = background.a;
+    }
+
+    int saucer_window_decorations(saucer_window *window)
+    {
+        return std::to_underlying((**window)->decorations());
+    }
+
+    void saucer_window_size(saucer_window *window, int *w, int *h)
+    {
+        auto size = (**window)->size();
+        *w        = size.w;
+        *h        = size.h;
+    }
+
+    void saucer_window_max_size(saucer_window *window, int *w, int *h)
+    {
+        auto size = (**window)->max_size();
+        *w        = size.w;
+        *h        = size.h;
+    }
+
+    void saucer_window_min_size(saucer_window *window, int *w, int *h)
+    {
+        auto size = (**window)->min_size();
+        *w        = size.w;
+        *h        = size.h;
+    }
+
+    void saucer_window_position(saucer_window *window, int *x, int *y)
+    {
+        auto pos = (**window)->position();
+        *x       = pos.x;
+        *y       = pos.y;
+    }
+
+    saucer_screen *saucer_window_screen(saucer_window *window)
+    {
+        auto rtn = (**window)->screen();
+
+        if (!rtn.has_value())
+        {
+            return nullptr;
+        }
+
+        return saucer_screen::from(std::move(*rtn));
+    }
+
+    void saucer_window_hide(saucer_window *window)
+    {
+        (**window)->hide();
+    }
+
+    void saucer_window_show(saucer_window *window)
+    {
+        (**window)->show();
+    }
+
+    void saucer_window_close(saucer_window *window)
+    {
+        (**window)->close();
+    }
+
+    void saucer_window_focus(saucer_window *window)
+    {
+        (**window)->focus();
+    }
+
+    void saucer_window_start_drag(saucer_window *window)
+    {
+        (**window)->start_drag();
+    }
+
+    void saucer_window_start_resize(saucer_window *window, saucer_window_edge edge)
+    {
+        (**window)->start_resize(static_cast<saucer::window::edge>(edge));
+    }
+
+    void saucer_window_set_minimized(saucer_window *window, bool value)
+    {
+        (**window)->set_minimized(value);
+    }
+
+    void saucer_window_set_maximized(saucer_window *window, bool value)
+    {
+        (**window)->set_maximized(value);
+    }
+
+    void saucer_window_set_resizable(saucer_window *window, bool value)
+    {
+        (**window)->set_resizable(value);
+    }
+
+    void saucer_window_set_fullscreen(saucer_window *window, bool value)
+    {
+        (**window)->set_fullscreen(value);
+    }
+
+    void saucer_window_set_always_on_top(saucer_window *window, bool value)
+    {
+        (**window)->set_always_on_top(value);
+    }
+
+    void saucer_window_set_click_through(saucer_window *window, bool value)
+    {
+        (**window)->set_click_through(value);
+    }
+
+    void saucer_window_set_icon(saucer_window *window, saucer_icon *icon)
+    {
+        (**window)->set_icon(**icon);
+    }
+
+    void saucer_window_set_title(saucer_window *window, const char *title)
+    {
+        (**window)->set_title(title);
+    }
+
+    void saucer_window_set_background(saucer_window *window, uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+    {
+        (**window)->set_background({.r = r, .g = g, .b = b, .a = a});
+    }
+
+    void saucer_window_set_decorations(saucer_window *window, saucer_window_decoration decoration)
+    {
+        (**window)->set_decorations(static_cast<saucer::window::decoration>(decoration));
+    }
+
+    void saucer_window_set_size(saucer_window *window, int w, int h)
+    {
+        (**window)->set_size({.w = w, .h = h});
+    }
+
+    void saucer_window_set_max_size(saucer_window *window, int w, int h)
+    {
+        (**window)->set_max_size({.w = w, .h = h});
+    }
+
+    void saucer_window_set_min_size(saucer_window *window, int w, int h)
+    {
+        (**window)->set_min_size({.w = w, .h = h});
+    }
+
+    void saucer_window_set_position(saucer_window *window, int x, int y)
+    {
+        (**window)->set_position({.x = x, .y = y});
+    }
+
+    using saucer::cutils::map;
+
+    using events = saucer::cutils::event_mapper<map<DECORATED, saucer_window_event_decorated>, //
+                                                map<MAXIMIZE, saucer_window_event_maximize>,   //
+                                                map<MINIMIZE, saucer_window_event_minimize>,   //
+                                                map<CLOSED, saucer_window_event_closed>,       //
+                                                map<RESIZE, saucer_window_event_resize>,       //
+                                                map<FOCUS, saucer_window_event_focus>,         //
+                                                map<CLOSE, saucer_window_event_close>          //
+                                                >;
+
+    size_t saucer_window_on(saucer_window *window, saucer_window_event event, void *callback, bool clearable,
+                            void *userdata)
+    {
+        auto fn = [window, callback, userdata]<typename T, typename... Ts>(std::type_identity<T>, Ts &&...args)
+        {
+            return reinterpret_cast<T>(callback)(window, std::forward<Ts>(args)..., userdata);
+        };
+
+        return events::on(fn, ***window, event, clearable);
+    }
+
+    void saucer_window_once(saucer_window *window, saucer_window_event event, void *callback, void *userdata)
+    {
+        auto fn = [window, callback, userdata]<typename T, typename... Ts>(std::type_identity<T>, Ts &&...args)
+        {
+            return reinterpret_cast<T>(callback)(window, std::forward<Ts>(args)..., userdata);
+        };
+
+        events::once(fn, ***window, event);
+    }
+
+    void saucer_window_off(saucer_window *window, saucer_window_event event, size_t id)
+    {
+        return (**window)->off(static_cast<saucer::window::event>(event), id);
+    }
+
+    void saucer_window_off_all(saucer_window *window, saucer_window_event event)
+    {
+        return (**window)->off(static_cast<saucer::window::event>(event));
     }
 }

@@ -1,51 +1,61 @@
-#include "icon.h"
-#include "icon.hpp"
-
-#include "stash.hpp"
+#include "icon.impl.hpp"
+#include "stash.impl.hpp"
 
 extern "C"
 {
-    void saucer_icon_free(saucer_icon *handle)
+    bool saucer_icon_empty(saucer_icon *icon)
     {
-        delete handle;
+        return (*icon)->empty();
     }
 
-    bool saucer_icon_empty(saucer_icon *handle)
+    saucer_stash *saucer_icon_data(saucer_icon *icon)
     {
-        return handle->value().empty();
+        return saucer_stash::from((*icon)->data());
     }
 
-    saucer_stash *saucer_icon_data(saucer_icon *handle)
+    void saucer_icon_save(saucer_icon *icon, const char *path)
     {
-        return saucer_stash::from(handle->value().data());
+        // TODO: widen on windows
+        (*icon)->save(path);
     }
 
-    void saucer_icon_save(saucer_icon *handle, const char *path)
+    void saucer_icon_free(saucer_icon *icon)
     {
-        handle->value().save(path);
+        delete icon;
     }
 
-    void saucer_icon_from_file(saucer_icon **result, const char *file)
+    saucer_icon *saucer_icon_new_from_file(const char *path, int *error)
     {
-        auto icon = saucer::icon::from(file);
+        // TODO: widen on windows
+        auto rtn = saucer::icon::from(path);
 
-        if (!icon)
+        if (!rtn.has_value() && error)
         {
-            return;
+            *error = rtn.error().code();
         }
 
-        *result = saucer_icon::from(std::move(icon.value()));
-    }
-
-    void saucer_icon_from_data(saucer_icon **result, saucer_stash *stash)
-    {
-        auto icon = saucer::icon::from(stash->value());
-
-        if (!icon)
+        if (!rtn.has_value())
         {
-            return;
+            return nullptr;
         }
 
-        *result = saucer_icon::from(std::move(icon.value()));
+        return saucer_icon::from(std::move(*rtn));
+    }
+
+    saucer_icon *saucer_icon_new_from_stash(saucer_stash *stash, int *error)
+    {
+        auto rtn = saucer::icon::from(**stash);
+
+        if (!rtn.has_value() && error)
+        {
+            *error = rtn.error().code();
+        }
+
+        if (!rtn.has_value())
+        {
+            return nullptr;
+        }
+
+        return saucer_icon::from(std::move(*rtn));
     }
 }
