@@ -38,6 +38,9 @@ extern "C"
     SAUCER_EXPORT void saucer_scheme_request_method(saucer_scheme_request *, char *, size_t *);
 
     SAUCER_EXPORT saucer_stash *saucer_scheme_request_content(saucer_scheme_request *);
+    /**
+     * @remark Headers are returned null delimited, e.g. as "Header: Value\0Another Header: Value"
+     */
     SAUCER_EXPORT void saucer_scheme_request_headers(saucer_scheme_request *, char *, size_t *);
 
     SAUCER_EXPORT void saucer_scheme_executor_free(saucer_scheme_executor *);

@@ -40,10 +40,15 @@ void pick(saucer_desktop *desktop, saucer_picker_options *opts, char *out, size_
 
     if constexpr (std::ranges::range<result_t>)
     {
-        final = *result                                                                 //
-                | std::views::transform([](const auto &path) { return path.string(); }) //
-                | std::views::join_with('\0')                                           //
-                | std::ranges::to<std::string>();
+        for (const auto &path : *result)
+        {
+            final += std::format("{}\0", path.string());
+        }
+
+        if (!final.empty())
+        {
+            final.pop_back();
+        }
     }
     else
     {
