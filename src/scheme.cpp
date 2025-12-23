@@ -54,19 +54,20 @@ extern "C"
         return saucer_stash::from((*request)->content());
     }
 
-    void saucer_scheme_request_headers(saucer_scheme_request *request, char *headers, size_t *size)
+    void saucer_scheme_request_headers(saucer_scheme_request *request, char *result, size_t *size)
     {
         auto fmt = [](auto &header)
         {
             return std::format("{}: {}", header.first, header.second);
         };
 
-        auto rtn = (*request)->headers()         //
+        auto headers = (*request)->headers();
+        auto rtn     = headers                   //
                    | std::views::transform(fmt)  //
                    | std::views::join_with('\0') //
                    | std::ranges::to<std::string>();
 
-        saucer::bindings::return_range(rtn, headers, size);
+        saucer::bindings::return_range(rtn, result, size);
     }
 
     void saucer_scheme_executor_free(saucer_scheme_executor *executor)
