@@ -56,16 +56,17 @@ extern "C"
 
     void saucer_scheme_request_headers(saucer_scheme_request *request, char *result, size_t *size)
     {
-        auto fmt = [](auto &header)
-        {
-            return std::format("{}: {}", header.first, header.second);
-        };
+        auto rtn = std::string{};
 
-        auto headers = (*request)->headers();
-        auto rtn     = headers                   //
-                   | std::views::transform(fmt)  //
-                   | std::views::join_with('\0') //
-                   | std::ranges::to<std::string>();
+        for (const auto &[header, value] : (*request)->headers())
+        {
+            rtn = std::format("{}: {}\0", header, value);
+        }
+
+        if (!rtn.empty())
+        {
+            rtn.pop_back();
+        }
 
         saucer::bindings::return_range(rtn, result, size);
     }
