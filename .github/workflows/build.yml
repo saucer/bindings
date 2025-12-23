@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
 
       matrix:
-        backend: [WebKit, WebKitGtk, WebView2, WebView2-Hack, Qt5, Qt6]
+        backend: [WebKit, WebKitGtk, WebView2, WebView2-Hack, Qt]
         config: [Debug, Release, RelWithDebInfo, MinSizeRel]
 
         include:
@@ -30,12 +30,7 @@ jobs:
             os: windows-latest
             cmake-args: -Dsaucer_msvc_hack=ON -Dsaucer_serializer=Rflpp
 
-          - backend: Qt5
-            platform: Linux
-            os: ubuntu-latest
-            container: archlinux:base-devel
-
-          - backend: Qt6
+          - backend: Qt
             platform: Linux
             os: ubuntu-latest
             container: archlinux:base-devel
