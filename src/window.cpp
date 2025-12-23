@@ -7,6 +7,9 @@
 #include "utils/range.hpp"
 #include "utils/convert.hpp"
 
+#include "natives.hpp"
+#include "utils/extract.hpp"
+
 template <>
 struct saucer::bindings::converter<saucer::window::decoration>
 {
@@ -289,5 +292,10 @@ extern "C"
     void saucer_window_off_all(saucer_window *window, saucer_window_event event)
     {
         return (**window)->off(static_cast<saucer::window::event>(event));
+    }
+
+    void saucer_window_native(saucer_window *window, size_t idx, void *result, size_t *size)
+    {
+        saucer::bindings::extract((**window)->native(), idx, result, size);
     }
 }

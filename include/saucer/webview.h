@@ -158,6 +158,8 @@ extern "C"
 
     SAUCER_EXPORT void saucer_webview_register_scheme(const char *);
 
+    SAUCER_EXPORT void saucer_webview_native(saucer_webview *, size_t, void *, size_t *);
+
 #ifdef __cplusplus
 }
 #endif

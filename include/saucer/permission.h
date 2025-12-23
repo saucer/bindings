@@ -37,6 +37,8 @@ extern "C"
 
     SAUCER_EXPORT void saucer_permission_request_accept(saucer_permission_request *, bool);
 
+    SAUCER_EXPORT void saucer_permission_request_native(saucer_permission_request *, size_t, void *, size_t *);
+
 #ifdef __cplusplus
 }
 #endif

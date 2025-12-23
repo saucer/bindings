@@ -3,6 +3,9 @@
 
 #include "utils/wide.hpp"
 
+#include "natives.hpp"
+#include "utils/extract.hpp"
+
 extern "C"
 {
     bool saucer_icon_empty(saucer_icon *icon)
@@ -62,5 +65,10 @@ extern "C"
         }
 
         return saucer_icon::from(std::move(*rtn));
+    }
+
+    void saucer_icon_native(saucer_icon *icon, size_t idx, void *result, size_t *size)
+    {
+        saucer::bindings::extract((*icon)->native(), idx, result, size);
     }
 }

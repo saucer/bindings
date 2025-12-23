@@ -67,8 +67,7 @@ extern "C"
     SAUCER_EXPORT void saucer_application_off(saucer_application *, saucer_application_event, size_t);
     SAUCER_EXPORT void saucer_application_off_all(saucer_application *, saucer_application_event);
 
-    // TODO: Expose natives via generic interface
-    // TODO: Loop module
+    SAUCER_EXPORT void saucer_application_native(saucer_application *, size_t, void *, size_t *);
 
 #ifdef __cplusplus
 }

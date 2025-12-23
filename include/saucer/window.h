@@ -119,6 +119,8 @@ extern "C"
     SAUCER_EXPORT void saucer_window_off(saucer_window *, saucer_window_event, size_t);
     SAUCER_EXPORT void saucer_window_off_all(saucer_window *, saucer_window_event);
 
+    SAUCER_EXPORT void saucer_window_native(saucer_window *, size_t, void *, size_t *);
+
 #ifdef __cplusplus
 }
 #endif

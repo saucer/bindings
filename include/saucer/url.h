@@ -30,6 +30,8 @@ extern "C"
     SAUCER_EXPORT void saucer_url_user(saucer_url *, char *, size_t *);
     SAUCER_EXPORT void saucer_url_password(saucer_url *, char *, size_t *);
 
+    SAUCER_EXPORT void saucer_url_native(saucer_url *, size_t, void *, size_t *);
+
 #ifdef __cplusplus
 }
 #endif

@@ -23,6 +23,8 @@ extern "C"
     SAUCER_EXPORT saucer_icon *saucer_icon_new_from_file(const char *, int *error);
     SAUCER_EXPORT saucer_icon *saucer_icon_new_from_stash(saucer_stash *, int *error);
 
+    SAUCER_EXPORT void saucer_icon_native(saucer_icon *, size_t, void *, size_t *);
+
 #ifdef __cplusplus
 }
 #endif

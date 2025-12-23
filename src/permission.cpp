@@ -2,6 +2,9 @@
 
 #include "url.impl.hpp"
 
+#include "natives.hpp"
+#include "utils/extract.hpp"
+
 extern "C"
 {
     void saucer_permission_request_free(saucer_permission_request *request)
@@ -27,5 +30,10 @@ extern "C"
     void saucer_permission_request_accept(saucer_permission_request *request, bool value)
     {
         (**request)->accept(value);
+    }
+
+    void saucer_permission_request_native(saucer_permission_request *request, size_t idx, void *result, size_t *size)
+    {
+        saucer::bindings::extract((**request)->native(), idx, result, size);
     }
 }

@@ -68,7 +68,7 @@ namespace saucer::bindings
     {
         using tuple = std::tuple<Ts...>;
 
-        template <std::size_t I, typename Return, typename F, typename R, typename T, typename U>
+        template <typename Return, std::size_t I = 0, typename F, typename R, typename T, typename U>
             requires(I < sizeof...(Ts))
         static auto visit(F &&visitor, R &&registrar, T &instance, const U &value)
         {
@@ -77,7 +77,7 @@ namespace saucer::bindings
 
             if (std::to_underlying(value) != std::to_underlying(from))
             {
-                return visit<I + 1, Return>(std::forward<F>(visitor), std::forward<R>(registrar), instance, value);
+                return visit<Return, I + 1>(std::forward<F>(visitor), std::forward<R>(registrar), instance, value);
             }
 
             auto fn = [visitor = std::forward<F>(visitor)]<typename... Us>(Us &&...args) mutable
@@ -100,7 +100,7 @@ namespace saucer::bindings
             return registrar(std::integral_constant<decltype(from), from>{}, std::move(fn));
         }
 
-        template <std::size_t I, typename Return>
+        template <typename Return, std::size_t I>
             requires(I >= sizeof...(Ts))
         static Return visit(auto &&...)
         {
@@ -118,7 +118,7 @@ namespace saucer::bindings
             return instance.template on<C::value>({{.func = std::forward<D>(fn), .clearable = clearable}});
         };
 
-        return impl::template visit<0, std::size_t>(std::forward<F>(visitor), registrar, instance, value);
+        return impl::template visit<std::size_t>(std::forward<F>(visitor), registrar, instance, value);
     }
 
     template <typename... Ts>
@@ -130,7 +130,7 @@ namespace saucer::bindings
             return instance.template once<C::value>(std::forward<D>(fn));
         };
 
-        return impl::template visit<0, void>(std::forward<F>(visitor), registrar, instance, value);
+        return impl::template visit<void>(std::forward<F>(visitor), registrar, instance, value);
     }
 
 } // namespace saucer::bindings
