@@ -1,8 +1,10 @@
+#pragma once
+
 #include "icon.h"
-#include "utils.hpp"
+#include "utils/opaque.hpp"
 
 #include <saucer/icon.hpp>
 
-struct saucer_icon : saucer::cutils::opaque<saucer_icon, saucer::icon>
+struct saucer_icon : saucer::bindings::opaque<saucer_icon, saucer::icon>
 {
 };

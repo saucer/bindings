@@ -1,11 +1,24 @@
 #include "app.impl.hpp"
 
+#include "utils/map.hpp"
+#include "utils/range.hpp"
+#include "utils/convert.hpp"
+
 template <>
-struct saucer::cutils::converter<saucer::screen>
+struct saucer::bindings::converter<saucer::screen>
 {
     static auto *convert(saucer::screen screen)
     {
         return saucer_screen::from(std::move(screen));
+    }
+};
+
+template <>
+struct saucer::bindings::converter<saucer::policy>
+{
+    static auto convert(const saucer_policy &value)
+    {
+        return static_cast<saucer::policy>(value);
     }
 };
 
@@ -33,14 +46,14 @@ extern "C"
         *y = (*screen)->position.y;
     }
 
-    saucer_application_options *saucer_application_options_new(const char *id)
-    {
-        return saucer_application_options::from({.id = id});
-    }
-
     void saucer_application_options_free(saucer_application_options *options)
     {
         delete options;
+    }
+
+    saucer_application_options *saucer_application_options_new(const char *id)
+    {
+        return saucer_application_options::from({.id = id});
     }
 
     void saucer_application_options_set_argc(saucer_application_options *options, int argc)
@@ -56,6 +69,11 @@ extern "C"
     void saucer_application_options_set_quit_on_last_window_closed(saucer_application_options *options, bool value)
     {
         (*options)->quit_on_last_window_closed = value;
+    }
+
+    void saucer_application_free(saucer_application *app)
+    {
+        delete app;
     }
 
     saucer_application *saucer_application_new(saucer_application_options *options, int *error)
@@ -75,11 +93,6 @@ extern "C"
         return saucer_application::from(std::move(rtn.value()));
     }
 
-    void saucer_application_free(saucer_application *app)
-    {
-        delete app;
-    }
-
     bool saucer_application_thread_safe(saucer_application *app)
     {
         return (*app)->thread_safe();
@@ -87,7 +100,7 @@ extern "C"
 
     void saucer_application_screens(saucer_application *app, saucer_screen **screens, size_t *size)
     {
-        saucer::cutils::return_range((*app)->screens(), screens, size);
+        saucer::bindings::return_range((*app)->screens(), screens, size);
     }
 
     int saucer_application_run(saucer_application *app, saucer_run_callback run, saucer_finish_callback finish,
@@ -114,5 +127,43 @@ extern "C"
     void saucer_application_quit(saucer_application *app)
     {
         (*app)->quit();
+    }
+
+    using saucer::bindings::map_enum;
+    using saucer::bindings::map_events;
+
+    using events = map_events<map_enum<SAUCER_APPLICATION_EVENT_QUIT, saucer_application_event_quit> //
+                              >;
+
+    size_t saucer_application_on(saucer_application *app, saucer_application_event event, void *callback,
+                                 bool clearable, void *userdata)
+    {
+        auto fn = [app, callback, userdata]<typename T, typename... Ts>(std::type_identity<T>, Ts &&...args)
+        {
+            return reinterpret_cast<T>(callback)(app, std::forward<Ts>(args)..., userdata);
+        };
+
+        return events::on(fn, **app, event, clearable);
+    }
+
+    void saucer_application_once(saucer_application *app, saucer_application_event event, void *callback,
+                                 void *userdata)
+    {
+        auto fn = [app, callback, userdata]<typename T, typename... Ts>(std::type_identity<T>, Ts &&...args)
+        {
+            return reinterpret_cast<T>(callback)(app, std::forward<Ts>(args)..., userdata);
+        };
+
+        events::once(fn, **app, event);
+    }
+
+    void saucer_application_off(saucer_application *app, saucer_application_event event, size_t id)
+    {
+        (*app)->off(static_cast<saucer::application::event>(event), id);
+    }
+
+    void saucer_application_off_all(saucer_application *app, saucer_application_event event)
+    {
+        (*app)->off(static_cast<saucer::application::event>(event));
     }
 }

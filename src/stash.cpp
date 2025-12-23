@@ -19,14 +19,19 @@ extern "C"
         delete stash;
     }
 
+    saucer_stash *saucer_stash_copy(saucer_stash *stash)
+    {
+        return saucer_stash::make(**stash);
+    }
+
     saucer_stash *saucer_stash_new_from(uint8_t *data, size_t size)
     {
-        return saucer_stash::from(saucer::stash<>::from({data, data + size}));
+        return saucer_stash::from(saucer::stash::from({data, data + size}));
     }
 
     saucer_stash *saucer_stash_new_view(const uint8_t *data, size_t size)
     {
-        return saucer_stash::from(saucer::stash<>::view({data, data + size}));
+        return saucer_stash::from(saucer::stash::view({data, data + size}));
     }
 
     saucer_stash *saucer_stash_new_lazy(saucer_stash_lazy_callback callback)
@@ -39,21 +44,21 @@ extern "C"
             return rtn;
         };
 
-        return saucer_stash::from(saucer::stash<>::lazy(fn));
+        return saucer_stash::from(saucer::stash::lazy(fn));
     }
 
     saucer_stash *saucer_stash_new_from_str(const char *str)
     {
-        return saucer_stash::from(saucer::stash<>::from_str(str));
+        return saucer_stash::from(saucer::stash::from_str(str));
     }
 
     saucer_stash *saucer_stash_new_view_str(const char *str)
     {
-        return saucer_stash::from(saucer::stash<>::view_str(str));
+        return saucer_stash::from(saucer::stash::view_str(str));
     }
 
     saucer_stash *saucer_stash_new_empty()
     {
-        return saucer_stash::from(saucer::stash<>::empty());
+        return saucer_stash::from(saucer::stash::empty());
     }
 }

@@ -3,8 +3,12 @@
 #include "app.impl.hpp"
 #include "icon.impl.hpp"
 
+#include "utils/map.hpp"
+#include "utils/range.hpp"
+#include "utils/convert.hpp"
+
 template <>
-struct saucer::cutils::converter<saucer::window::decoration>
+struct saucer::bindings::converter<saucer::window::decoration>
 {
     static auto convert(saucer::window::decoration decoration)
     {
@@ -13,7 +17,7 @@ struct saucer::cutils::converter<saucer::window::decoration>
 };
 
 template <>
-struct saucer::cutils::converter<saucer::policy>
+struct saucer::bindings::converter<saucer::policy>
 {
     static auto convert(const saucer_policy &value)
     {
@@ -23,6 +27,11 @@ struct saucer::cutils::converter<saucer::policy>
 
 extern "C"
 {
+    void saucer_window_free(saucer_window *window)
+    {
+        delete window;
+    }
+
     saucer_window *saucer_window_new(saucer_application *app, int *error)
     {
         auto rtn = saucer::window::create(app->ptr());
@@ -38,11 +47,6 @@ extern "C"
         }
 
         return saucer_window::from(std::move(*rtn));
-    }
-
-    void saucer_window_free(saucer_window *window)
-    {
-        delete window;
     }
 
     bool saucer_window_visible(saucer_window *window)
@@ -87,7 +91,7 @@ extern "C"
 
     void saucer_window_title(saucer_window *window, char *title, size_t *size)
     {
-        saucer::cutils::return_range((**window)->title(), title, size);
+        saucer::bindings::return_range((**window)->title(), title, size);
     }
 
     void saucer_window_background(saucer_window *window, uint8_t *r, uint8_t *g, uint8_t *b, uint8_t *a)
@@ -244,16 +248,17 @@ extern "C"
         (**window)->set_position({.x = x, .y = y});
     }
 
-    using saucer::cutils::map;
+    using saucer::bindings::map_enum;
+    using saucer::bindings::map_events;
 
-    using events = saucer::cutils::event_mapper<map<DECORATED, saucer_window_event_decorated>, //
-                                                map<MAXIMIZE, saucer_window_event_maximize>,   //
-                                                map<MINIMIZE, saucer_window_event_minimize>,   //
-                                                map<CLOSED, saucer_window_event_closed>,       //
-                                                map<RESIZE, saucer_window_event_resize>,       //
-                                                map<FOCUS, saucer_window_event_focus>,         //
-                                                map<CLOSE, saucer_window_event_close>          //
-                                                >;
+    using events = map_events<map_enum<SAUCER_WINDOW_EVENT_DECORATED, saucer_window_event_decorated>, //
+                              map_enum<SAUCER_WINDOW_EVENT_MAXIMIZE, saucer_window_event_maximize>,   //
+                              map_enum<SAUCER_WINDOW_EVENT_MINIMIZE, saucer_window_event_minimize>,   //
+                              map_enum<SAUCER_WINDOW_EVENT_CLOSED, saucer_window_event_closed>,       //
+                              map_enum<SAUCER_WINDOW_EVENT_RESIZE, saucer_window_event_resize>,       //
+                              map_enum<SAUCER_WINDOW_EVENT_FOCUS, saucer_window_event_focus>,         //
+                              map_enum<SAUCER_WINDOW_EVENT_CLOSE, saucer_window_event_close>          //
+                              >;
 
     size_t saucer_window_on(saucer_window *window, saucer_window_event event, void *callback, bool clearable,
                             void *userdata)

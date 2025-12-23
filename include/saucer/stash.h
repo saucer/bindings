@@ -18,6 +18,8 @@ extern "C"
     typedef saucer_stash *(*saucer_stash_lazy_callback)();
 
     SAUCER_EXPORT void saucer_stash_free(saucer_stash *);
+    SAUCER_EXPORT saucer_stash *saucer_stash_copy(saucer_stash *);
+
     SAUCER_EXPORT saucer_stash *saucer_stash_new_from(uint8_t *, size_t);
     SAUCER_EXPORT saucer_stash *saucer_stash_new_view(const uint8_t *, size_t);
     SAUCER_EXPORT saucer_stash *saucer_stash_new_lazy(saucer_stash_lazy_callback);

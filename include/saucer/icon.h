@@ -18,6 +18,8 @@ extern "C"
     SAUCER_EXPORT void saucer_icon_save(saucer_icon *, const char *);
 
     SAUCER_EXPORT void saucer_icon_free(saucer_icon *);
+    SAUCER_EXPORT saucer_icon *saucer_icon_copy(saucer_icon *);
+
     SAUCER_EXPORT saucer_icon *saucer_icon_new_from_file(const char *, int *error);
     SAUCER_EXPORT saucer_icon *saucer_icon_new_from_stash(saucer_stash *, int *error);
 

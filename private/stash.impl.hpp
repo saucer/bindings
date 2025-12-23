@@ -1,8 +1,10 @@
+#pragma once
+
 #include "stash.h"
-#include "utils.hpp"
+#include "utils/opaque.hpp"
 
 #include <saucer/stash/stash.hpp>
 
-struct saucer_stash : saucer::cutils::opaque<saucer_stash, saucer::stash<>>
+struct saucer_stash : saucer::bindings::opaque<saucer_stash, saucer::stash>
 {
 };

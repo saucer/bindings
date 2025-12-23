@@ -18,32 +18,32 @@ extern "C"
 
     enum saucer_window_edge : uint8_t
     {
-        top          = 1 << 0,
-        bottom       = 1 << 1,
-        left         = 1 << 2,
-        right        = 1 << 3,
-        bottom_left  = bottom | left,
-        bottom_right = bottom | right,
-        top_left     = top | left,
-        top_right    = top | right,
+        SAUCER_WINDOW_EDGE_TOP          = 1 << 0,
+        SAUCER_WINDOW_EDGE_BOTTOM       = 1 << 1,
+        SAUCER_WINDOW_EDGE_LEFT         = 1 << 2,
+        SAUCER_WINDOW_EDGE_RIGHT        = 1 << 3,
+        SAUCER_WINDOW_EDGE_BOTTOM_LEFT  = SAUCER_WINDOW_EDGE_BOTTOM | SAUCER_WINDOW_EDGE_LEFT,
+        SAUCER_WINDOW_EDGE_BOTTOM_RIGHT = SAUCER_WINDOW_EDGE_BOTTOM | SAUCER_WINDOW_EDGE_RIGHT,
+        SAUCER_WINDOW_EDGE_TOP_LEFT     = SAUCER_WINDOW_EDGE_TOP | SAUCER_WINDOW_EDGE_LEFT,
+        SAUCER_WINDOW_EDGE_TOP_RIGHT    = SAUCER_WINDOW_EDGE_TOP | SAUCER_WINDOW_EDGE_RIGHT,
     };
 
     enum saucer_window_decoration : uint8_t
     {
-        none,
-        partial,
-        full,
+        SAUCER_WINDOW_DECORATION_NONE,
+        SAUCER_WINDOW_DECORATION_PARTIAL,
+        SAUCER_WINDOW_DECORATION_FULL,
     };
 
     enum saucer_window_event
     {
-        DECORATED,
-        MAXIMIZE,
-        MINIMIZE,
-        CLOSED,
-        RESIZE,
-        FOCUS,
-        CLOSE
+        SAUCER_WINDOW_EVENT_DECORATED,
+        SAUCER_WINDOW_EVENT_MAXIMIZE,
+        SAUCER_WINDOW_EVENT_MINIMIZE,
+        SAUCER_WINDOW_EVENT_CLOSED,
+        SAUCER_WINDOW_EVENT_RESIZE,
+        SAUCER_WINDOW_EVENT_FOCUS,
+        SAUCER_WINDOW_EVENT_CLOSE,
     };
 
     typedef void (*saucer_window_event_decorated)(saucer_window *, saucer_window_decoration, void *);
@@ -54,8 +54,8 @@ extern "C"
     typedef void (*saucer_window_event_focus)(saucer_window *, bool, void *);
     typedef saucer_policy (*saucer_window_event_close)(saucer_window *, void *);
 
-    SAUCER_EXPORT saucer_window *saucer_window_new(saucer_application *, int *error);
     SAUCER_EXPORT void saucer_window_free(saucer_window *);
+    SAUCER_EXPORT saucer_window *saucer_window_new(saucer_application *, int *error);
 
     SAUCER_EXPORT bool saucer_window_visible(saucer_window *);
     SAUCER_EXPORT bool saucer_window_focused(saucer_window *);
