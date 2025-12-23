@@ -4,9 +4,6 @@
 #include "utils/range.hpp"
 #include "utils/convert.hpp"
 
-#include "natives.hpp"
-#include "utils/extract.hpp"
-
 template <>
 struct saucer::bindings::converter<saucer::screen>
 {
@@ -168,10 +165,5 @@ extern "C"
     void saucer_application_off_all(saucer_application *app, saucer_application_event event)
     {
         (*app)->off(static_cast<saucer::application::event>(event));
-    }
-
-    void saucer_application_native(saucer_application *app, size_t idx, void *result, size_t *size)
-    {
-        saucer::bindings::extract((*app)->native(), idx, result, size);
     }
 }

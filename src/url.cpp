@@ -3,9 +3,6 @@
 #include "utils/wide.hpp"
 #include "utils/range.hpp"
 
-#include "natives.hpp"
-#include "utils/extract.hpp"
-
 extern "C"
 {
     void saucer_url_free(saucer_url *url)
@@ -112,10 +109,5 @@ extern "C"
     void saucer_url_password(saucer_url *url, char *password, size_t *size)
     {
         saucer::bindings::return_range((*url)->password(), password, size);
-    }
-
-    void saucer_url_native(saucer_url *url, size_t idx, void *result, size_t *size)
-    {
-        saucer::bindings::extract((*url)->native(), idx, result, size);
     }
 }

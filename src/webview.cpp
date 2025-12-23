@@ -15,9 +15,6 @@
 #include "utils/range.hpp"
 #include "utils/convert.hpp"
 
-#include "natives.hpp"
-#include "utils/extract.hpp"
-
 template <>
 struct saucer::bindings::converter<saucer::policy>
 {
@@ -375,10 +372,5 @@ extern "C"
     void saucer_webview_register_scheme(const char *scheme)
     {
         saucer::webview::register_scheme(scheme);
-    }
-
-    void saucer_webview_native(saucer_webview *webview, size_t idx, void *result, size_t *size)
-    {
-        saucer::bindings::extract((*webview)->native(), idx, result, size);
     }
 }

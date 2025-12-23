@@ -1,5 +1,6 @@
 build
 **/export.h
+src/native.mm
 
 .vs
 .cache
