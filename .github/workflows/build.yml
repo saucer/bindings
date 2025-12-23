@@ -15,16 +15,27 @@ jobs:
       fail-fast: false
 
       matrix:
-        backend: [WebKit, WebKitGtk, WebView2, WebView2-Hack, Qt]
+        backend: [WebKit, WebKitGtk, WebView2, WebView2-Rfl, WebView2-Hack, WebView2-Hack-Rfl, Qt]
         config: [Debug, Release, RelWithDebInfo, MinSizeRel]
 
         include:
           - backend: WebView2
             platform: Windows
             os: windows-latest
+
+          - backend: WebView2-Rfl
+            backend-override: WebView2
+            platform: Windows
+            os: windows-latest
             cmake-args: -Dsaucer_serializer=Rflpp
 
           - backend: WebView2-Hack
+            backend-override: WebView2
+            platform: Windows
+            os: windows-latest
+            cmake-args: -Dsaucer_msvc_hack=ON
+
+          - backend: WebView2-Hack-Rfl
             backend-override: WebView2
             platform: Windows
             os: windows-latest
