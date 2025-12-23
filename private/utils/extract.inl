@@ -50,9 +50,9 @@ namespace saucer::bindings
         *reinterpret_cast<element *>(result) = std::get<I>(tuple);
     }
 
-    template <detail::tuple T, std::size_t I>
+    template <std::size_t I, detail::tuple T>
         requires(I >= std::tuple_size_v<T>)
-    void extract_impl(T &, std::size_t, void *, std::size_t *)
+    void detail::extract_impl(T &&, std::size_t, void *, std::size_t *)
     {
         std::abort();
     }
