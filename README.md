@@ -13,7 +13,7 @@
 > [!NOTE]
 > The bindings found in this repository do not wrap the C++ API completely.  
 > All of the core functionality is wrapped, but serialization heavy parts such as the smartview are not, as it would not make sense to do so.
-> Instead, users are encouraged to build their own serilization on top of the bindings provided here, by using the respective event callbacks[^1].
+> Instead, users are encouraged to build their own serialization on top of the bindings provided here, by using the respective event callbacks[^1].
 
 ## Existing Bindings
 
