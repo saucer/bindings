@@ -1,0 +1,6 @@
+#pragma once
+
+namespace saucer
+{
+    static constexpr auto version = "@CMAKE_PROJECT_VERSION@";
+}

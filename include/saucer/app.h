@@ -90,6 +90,11 @@ extern "C"
      */
     SAUCER_EXPORT void saucer_application_native(saucer_application *, size_t idx, void *result, size_t *size);
 
+    /**
+     * @note The returned string does not need to be free'd.
+     */
+    SAUCER_EXPORT const char *saucer_version();
+
 #ifdef __cplusplus
 }
 #endif

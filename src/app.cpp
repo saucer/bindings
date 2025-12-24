@@ -4,6 +4,8 @@
 #include "utils/range.hpp"
 #include "utils/convert.hpp"
 
+#include "version.hpp"
+
 template <>
 struct saucer::bindings::converter<saucer::screen>
 {
@@ -165,5 +167,10 @@ extern "C"
     void saucer_application_off_all(saucer_application *app, saucer_application_event event)
     {
         (*app)->off(static_cast<saucer::application::event>(event));
+    }
+
+    const char *saucer_version()
+    {
+        return saucer::version;
     }
 }
