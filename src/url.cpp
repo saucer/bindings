@@ -89,16 +89,16 @@ extern "C"
         saucer::bindings::return_range((*url)->host(), host, size);
     }
 
-    void saucer_url_port(saucer_url *url, size_t *port)
+    bool saucer_url_port(saucer_url *url, size_t *port)
     {
         auto rtn = (*url)->port();
 
-        if (!port)
+        if (rtn.has_value())
         {
-            return;
+            *port = *rtn;
         }
 
-        *port = *rtn;
+        return rtn.has_value();
     }
 
     void saucer_url_user(saucer_url *url, char *user, size_t *size)
