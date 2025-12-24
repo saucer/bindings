@@ -12,8 +12,6 @@ extern "C"
         return (*stash)->size();
     }
 
-    typedef saucer_stash *(*saucer_stash_lazy_callback)();
-
     void saucer_stash_free(saucer_stash *stash)
     {
         delete stash;
@@ -34,11 +32,11 @@ extern "C"
         return saucer_stash::from(saucer::stash::view({data, data + size}));
     }
 
-    saucer_stash *saucer_stash_new_lazy(saucer_stash_lazy_callback callback)
+    saucer_stash *saucer_stash_new_lazy(saucer_stash_lazy_callback callback, void *userdata)
     {
-        auto fn = [callback]()
+        auto fn = [callback, userdata]()
         {
-            auto *stash = std::invoke(callback);
+            auto *stash = callback(userdata);
             auto rtn    = **stash;
             saucer_stash_free(stash);
             return rtn;

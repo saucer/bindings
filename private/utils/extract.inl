@@ -5,6 +5,7 @@
 
 #include <rebind/tuple.hpp>
 
+#include <print>
 #include <cstdlib>
 
 namespace saucer::bindings
@@ -35,6 +36,11 @@ namespace saucer::bindings
         }
 
         using element = std::remove_reference_t<std::tuple_element_t<I, T>>;
+
+        if constexpr (not std::is_trivially_copyable_v<element>)
+        {
+            std::println(stderr, "[saucer] The extracted value (idx: {}) is not trivially copyable! Be cautious...", I);
+        }
 
         if (!result)
         {

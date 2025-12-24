@@ -119,9 +119,9 @@ extern "C"
         return (*app)->run(fn);
     }
 
-    void saucer_application_post(saucer_application *app, saucer_post_callback callback)
+    void saucer_application_post(saucer_application *app, saucer_post_callback callback, void *userdata)
     {
-        (*app)->post(callback);
+        (*app)->post([callback, userdata] { callback(userdata); });
     }
 
     void saucer_application_quit(saucer_application *app)

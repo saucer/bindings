@@ -158,6 +158,9 @@ extern "C"
 
     SAUCER_EXPORT void saucer_webview_register_scheme(const char *);
 
+    /**
+     * @note Please refer to the documentation in `application.h` on how to use this function.
+     */
     SAUCER_EXPORT void saucer_webview_native(saucer_webview *, size_t, void *, size_t *);
 
 #ifdef __cplusplus

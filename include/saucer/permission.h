@@ -37,6 +37,9 @@ extern "C"
 
     SAUCER_EXPORT void saucer_permission_request_accept(saucer_permission_request *, bool);
 
+    /**
+     * @note Please refer to the documentation in `application.h` on how to use this function.
+     */
     SAUCER_EXPORT void saucer_permission_request_native(saucer_permission_request *, size_t, void *, size_t *);
 
 #ifdef __cplusplus
