@@ -10,12 +10,16 @@
 
 ---
 
-> [!WARNING]
-> The bindings found in this repository are not feature complete c-bindings (Interop has to be implemented by the user).  
-> Instead, they are the building grounds for language-bindings.
+> [!NOTE]
+> The bindings found in this repository do not wrap the C++ API completely.  
+> All of the core functionality is wrapped, but serialization heavy parts such as the smartview are not, as it would not make sense to do so.  
+> Instead, users are encouraged to build their own serilization on top of the bindings provided here, by using the respective event callbacks[^1].
 
 ## Existing Bindings
 
-> All bindings are developed and maintained by the community, their compatibility conformance may vary.
+Please checkout the [main repository](https://github.com/saucer/saucer) for the list of available bindings. 
+Also, beware that all bindings are community maintained and their conformance may vary.
 
-* Java: [saucer4j](https://github.com/saucer/saucer4j)
+---
+
+[^1]: For more information, checkout the official repository to see how the smartview is actually implemented under the hood.
