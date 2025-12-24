@@ -5,7 +5,7 @@
 
 #include "utils/range.hpp"
 
-#include <ranges>
+#include <format>
 
 extern "C"
 {
@@ -56,11 +56,12 @@ extern "C"
 
     void saucer_scheme_request_headers(saucer_scheme_request *request, char *result, size_t *size)
     {
-        auto rtn = std::string{};
+        auto rtn = std::vector<char>{};
 
         for (const auto &[header, value] : (*request)->headers())
         {
-            rtn = std::format("{}: {}\0", header, value);
+            rtn.insert_range(rtn.end(), saucer::bindings::vectorize(std::format("{}: {}", header, value)));
+            rtn.emplace_back('\0');
         }
 
         if (!rtn.empty())

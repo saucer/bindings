@@ -36,13 +36,14 @@ void pick(saucer_desktop *desktop, saucer_picker_options *opts, char *out, size_
         return;
     }
 
-    auto final = std::string{};
+    auto final = std::vector<char>{};
 
     if constexpr (std::ranges::range<result_t>)
     {
         for (const auto &path : *result)
         {
-            final += std::format("{}\0", path.string());
+            final.insert_range(final.end(), saucer::bindings::vectorize(path.string()));
+            final.emplace_back('\0');
         }
 
         if (!final.empty())
@@ -52,7 +53,7 @@ void pick(saucer_desktop *desktop, saucer_picker_options *opts, char *out, size_
     }
     else
     {
-        final = result.string();
+        final = saucer::bindings::vectorize(result.string());
     }
 
     saucer::bindings::return_range(final, out, size);
@@ -60,27 +61,31 @@ void pick(saucer_desktop *desktop, saucer_picker_options *opts, char *out, size_
 
 extern "C"
 {
-    saucer_picker_options *saucer_desktop_options_new()
+    saucer_picker_options *saucer_picker_options_new()
     {
         return saucer_picker_options::from({});
     }
 
-    void saucer_desktop_options_free(saucer_picker_options *options)
+    void saucer_picker_options_free(saucer_picker_options *options)
     {
         delete options;
     }
 
-    void saucer_desktop_options_set_initial(saucer_picker_options *options, const char *initial)
+    void saucer_picker_options_set_initial(saucer_picker_options *options, const char *initial)
     {
         (*options)->initial = saucer::bindings::u8path(initial);
     }
 
-    void saucer_desktop_options_set_filters(saucer_picker_options *opts, const char *filters, size_t size)
+    void saucer_picker_options_set_filters(saucer_picker_options *opts, const char *filters, size_t size)
     {
-        for (const char *str = filters; str - filters < size; size += std::char_traits<char>::length(str))
+        auto final = std::set<std::string>{};
+
+        for (const char *str = filters; str - filters < size; str += std::char_traits<char>::length(str) + 1)
         {
-            (*opts)->filters.emplace(str);
+            final.emplace(str);
         }
+
+        (*opts)->filters = std::move(final);
     }
 
     void saucer_desktop_free(saucer_desktop *desktop)

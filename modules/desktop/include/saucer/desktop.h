@@ -13,14 +13,14 @@ extern "C"
     struct saucer_desktop;
     struct saucer_picker_options;
 
-    SAUCER_DESKTOP_EXPORT saucer_picker_options *saucer_desktop_options_new();
-    SAUCER_DESKTOP_EXPORT void saucer_desktop_options_free(saucer_picker_options *);
+    SAUCER_DESKTOP_EXPORT saucer_picker_options *saucer_picker_options_new();
+    SAUCER_DESKTOP_EXPORT void saucer_picker_options_free(saucer_picker_options *);
 
-    SAUCER_DESKTOP_EXPORT void saucer_desktop_options_set_initial(saucer_picker_options *, const char *);
+    SAUCER_DESKTOP_EXPORT void saucer_picker_options_set_initial(saucer_picker_options *, const char *);
     /**
      * @remark Expects the filters in the format of: "filter1\0filter2\0filter3\0"
      */
-    SAUCER_DESKTOP_EXPORT void saucer_desktop_options_set_filters(saucer_picker_options *, const char *, size_t);
+    SAUCER_DESKTOP_EXPORT void saucer_picker_options_set_filters(saucer_picker_options *, const char *, size_t);
 
     SAUCER_DESKTOP_EXPORT void saucer_desktop_free(saucer_desktop *);
     SAUCER_DESKTOP_EXPORT saucer_desktop *saucer_desktop_new(saucer_application *);

@@ -52,4 +52,18 @@ namespace saucer::bindings
 
         return return_range(std::move(*value), result, size);
     }
+
+    template <std::ranges::sized_range T>
+    auto vectorize(T &&value)
+    {
+        auto rtn = std::vector<typename T::value_type>{};
+        rtn.reserve(value.size());
+
+        for (auto &&element : value)
+        {
+            rtn.emplace_back(std::forward_like<T>(element));
+        }
+
+        return rtn;
+    }
 } // namespace saucer::bindings
