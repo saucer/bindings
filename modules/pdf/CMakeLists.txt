@@ -1,4 +1,4 @@
-project(saucer-bindings-pdf LANGUAGES CXX VERSION 6.0.0)
+project(saucer-bindings-pdf LANGUAGES CXX VERSION 8.0.0)
 
 # --------------------------------------------------------------------------------------------------------
 # Setup library
