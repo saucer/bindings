@@ -24,17 +24,17 @@ jobs:
             os: windows-latest
             cmake-args: -Dglaze_DISABLE_SIMD_WHEN_SUPPORTED=ON
 
-          - backend: WebView2-Rfl
-            backend-override: WebView2
-            platform: Windows
-            os: windows-latest
-            cmake-args: -Dsaucer_serializer=Rflpp
-
           - backend: WebView2-Hack
             backend-override: WebView2
             platform: Windows
             os: windows-latest
             cmake-args: -Dsaucer_msvc_hack=ON -Dglaze_DISABLE_SIMD_WHEN_SUPPORTED=ON
+
+          - backend: WebView2-Rfl
+            backend-override: WebView2
+            platform: Windows
+            os: windows-latest
+            cmake-args: -Dsaucer_serializer=Rflpp
 
           - backend: WebView2-Hack-Rfl
             backend-override: WebView2

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.21)
-project(saucer-bindings LANGUAGES CXX VERSION 8.0.0)
+project(saucer-bindings LANGUAGES CXX VERSION 8.0.1)
 
 # +-------------------------------------------------------------------------------------------------------+
 # | Library switches                                                                                      |
@@ -82,7 +82,7 @@ include("cmake/cpm.cmake")
 
 CPMFindPackage(
   NAME           saucer
-  VERSION        8.0.0
+  VERSION        8.0.1
   GIT_REPOSITORY "https://github.com/saucer/saucer"
   OPTIONS        "saucer_static OFF" "CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON"
 )
