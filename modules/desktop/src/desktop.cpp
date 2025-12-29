@@ -38,7 +38,7 @@ void pick(saucer_desktop *desktop, saucer_picker_options *opts, char *out, size_
 
     auto final = std::vector<char>{};
 
-    if constexpr (std::ranges::range<result_t>)
+    if constexpr (std::same_as<result_t, std::vector<saucer::fs::path>>)
     {
         for (const auto &path : *result)
         {
@@ -53,7 +53,7 @@ void pick(saucer_desktop *desktop, saucer_picker_options *opts, char *out, size_
     }
     else
     {
-        final = saucer::bindings::vectorize(result.string());
+        final = saucer::bindings::vectorize(result->string());
     }
 
     saucer::bindings::return_range(final, out, size);
@@ -125,8 +125,8 @@ extern "C"
         pick<type::files>(desktop, options, files, size, error);
     }
 
-    void saucer_desktop_pick_save(saucer_desktop *desktop, saucer_picker_options *options, char *location, size_t *size,
-                                  int *error)
+    void saucer_picker_save(saucer_desktop *desktop, saucer_picker_options *options, char *location, size_t *size,
+                            int *error)
     {
         pick<type::save>(desktop, options, location, size, error);
     }
