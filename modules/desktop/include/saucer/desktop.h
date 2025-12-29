@@ -27,13 +27,25 @@ extern "C"
 
     SAUCER_DESKTOP_EXPORT void saucer_desktop_mouse_position(saucer_desktop *, int *x, int *y);
 
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_DESKTOP_EXPORT void saucer_picker_pick_file(saucer_desktop *, saucer_picker_options *, char *, size_t *,
                                                        int *error);
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_DESKTOP_EXPORT void saucer_picker_pick_folder(saucer_desktop *, saucer_picker_options *, char *, size_t *,
                                                          int *error);
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_DESKTOP_EXPORT void saucer_picker_pick_files(saucer_desktop *, saucer_picker_options *, char *, size_t *,
                                                         int *error);
 
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_DESKTOP_EXPORT void saucer_picker_save(saucer_desktop *, saucer_picker_options *, char *, size_t *,
                                                   int *error);
 

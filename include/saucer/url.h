@@ -16,7 +16,13 @@ extern "C"
     SAUCER_EXPORT void saucer_url_free(saucer_url *);
     SAUCER_EXPORT saucer_url *saucer_url_copy(saucer_url *);
 
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_EXPORT saucer_url *saucer_url_new_parse(const char *, int *error);
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_EXPORT saucer_url *saucer_url_new_from(const char *, int *error);
     SAUCER_EXPORT saucer_url *saucer_url_new_opts(const char *scheme, const char *host, size_t *port, const char *path);
 

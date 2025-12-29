@@ -55,6 +55,9 @@ extern "C"
     typedef saucer_policy (*saucer_window_event_close)(saucer_window *, void *);
 
     SAUCER_EXPORT void saucer_window_free(saucer_window *);
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_EXPORT saucer_window *saucer_window_new(saucer_application *, int *error);
 
     SAUCER_EXPORT bool saucer_window_visible(saucer_window *);

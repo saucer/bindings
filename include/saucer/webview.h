@@ -97,8 +97,14 @@ extern "C"
     SAUCER_EXPORT void saucer_webview_options_append_browser_flag(saucer_webview_options *, const char *);
 
     SAUCER_EXPORT void saucer_webview_free(saucer_webview *);
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_EXPORT saucer_webview *saucer_webview_new(saucer_webview_options *, int *error);
 
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_EXPORT saucer_url *saucer_webview_url(saucer_webview *, int *error);
 
     SAUCER_EXPORT saucer_icon *saucer_webview_favicon(saucer_webview *);

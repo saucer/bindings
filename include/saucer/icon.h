@@ -20,7 +20,13 @@ extern "C"
     SAUCER_EXPORT void saucer_icon_free(saucer_icon *);
     SAUCER_EXPORT saucer_icon *saucer_icon_copy(saucer_icon *);
 
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_EXPORT saucer_icon *saucer_icon_new_from_file(const char *, int *error);
+    /**
+     * @note The pointer passed to \param{error} can be null
+     */
     SAUCER_EXPORT saucer_icon *saucer_icon_new_from_stash(saucer_stash *, int *error);
 
     /**
