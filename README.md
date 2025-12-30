@@ -34,7 +34,7 @@ The workflows build in all configurations (Debug, MinSizeRel, RelWithDebInfo, Re
 
 ## Building
 
-In case one absolutely needs to build the bindings yourself, please install the following dependencies:
+In case one absolutely needs to build the bindings themselves, please install the following dependencies:
 
 - Windows
   - Latest Toolchain
