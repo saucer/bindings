@@ -1,8 +1,10 @@
 #include "desktop.h"
 #include "app.impl.hpp"
 
-#include "utils/wide.hpp"
 #include "utils/range.hpp"
+#include "utils/traits.hpp"
+
+#include "utils/wide.hpp"
 #include "utils/opaque.hpp"
 
 #include <saucer/modules/desktop.hpp>
@@ -38,7 +40,7 @@ void pick(saucer_desktop *desktop, saucer_picker_options *opts, char *out, size_
 
     auto final = std::vector<char>{};
 
-    if constexpr (std::same_as<result_t, std::vector<saucer::fs::path>>)
+    if constexpr (saucer::bindings::container<result_t, std::vector>)
     {
         for (const auto &path : *result)
         {
